@@ -32,7 +32,7 @@ management centralized and deterministic.
 
 `AIE OS` has three product parts:
 
-- `kb/`: reusable engineering knowledge.
+- `knowledge-base/`: reusable engineering knowledge.
 - `agent/`: reusable agent configuration.
 - `cli/`: context build and tool-specific delivery adapters.
 
@@ -58,10 +58,10 @@ aie-os/
   cli/
     src/
     templates/
-  kb/
+  knowledge-base/
 ```
 
-- `kb/` contains reusable knowledge only: principles and standards.
+- `knowledge-base/` contains reusable knowledge only: principles and standards.
 - `agent/` contains reusable behavior configuration: style and persona.
 - `cli/` contains the package-ready TypeScript builder and delivery adapters.
 
@@ -69,8 +69,8 @@ aie-os/
 
 The first CLI version supports:
 
-- `aie-os init --tool codex --project-path /path/to/repo --kb-path /path/to/kb`
-- `aie-os build --tool codex --project-path /path/to/repo --kb-path /path/to/kb`
+- `aie-os init --tool codex --project-path /path/to/repo --kb-path /path/to/knowledge-base`
+- `aie-os build --tool codex --project-path /path/to/repo --kb-path /path/to/knowledge-base`
 
 `init` scaffolds the repo-local `.ai` files and then runs `build`.
 
@@ -79,8 +79,9 @@ The first CLI version supports:
 - `repo/.ai/agent-context.md`
 - `repo/AGENTS.md`
 
-When running the CLI from this repository, the default KB path is the sibling
-`kb/` directory and the default agent path is the sibling `agent/` directory.
+When running the CLI from this repository, the default knowledge-base path is
+the sibling `knowledge-base/` directory and the default agent path is the
+sibling `agent/` directory.
 When the CLI is installed independently, pass `--kb-path` and, if needed,
 `--agent-path`, or set `AIE_OS_KB_PATH` and `AIE_OS_AGENT_PATH`.
 

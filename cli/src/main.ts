@@ -47,7 +47,7 @@ Usage:
 Options:
   --tool          Delivery adapter target. Only codex is supported in v1.
   --project-path  Target repository to scaffold or build.
-  --kb-path       Knowledge base root. Defaults to AIE_OS_KB_PATH or ../kb when available.
+  --kb-path       Knowledge base root. Defaults to AIE_OS_KB_PATH or ../knowledge-base when available.
   --agent-path    Agent configuration root. Defaults to AIE_OS_AGENT_PATH or ../agent next to the KB.
   -h, --help      Show help.`;
 
@@ -211,7 +211,7 @@ function resolveKbPath(cwd: string, explicitKbPath?: string): string {
     return path.resolve(cwd, environmentKbPath);
   }
 
-  return path.resolve(__dirname, "..", "..", "kb");
+  return path.resolve(__dirname, "..", "..", "knowledge-base");
 }
 
 function resolveAgentPath(
