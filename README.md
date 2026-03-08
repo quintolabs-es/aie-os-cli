@@ -1,8 +1,8 @@
 # AIE OS
 
 `AIE OS` is an AI engineering operating system for standardizing reusable
-engineering knowledge, reusable agent configuration, and deterministic context
-delivery across repositories.
+engineering knowledge, reusable agent configuration, reusable skills, and
+deterministic context delivery across repositories.
 
 `AIE OS` is the system itself: the model, layers, rules, reusable content, and
 build contract for configuring software engineering agents.
@@ -30,10 +30,11 @@ management centralized and deterministic.
 
 ## Current Architecture
 
-`AIE OS` has three product parts:
+`AIE OS` has four product parts:
 
 - `knowledge-base/`: reusable engineering knowledge.
 - `agent/`: reusable agent configuration.
+- `skills/`: reusable workflow-specific guidance.
 - `cli/`: context build and tool-specific delivery adapters.
 
 The current precedence model is:
@@ -45,8 +46,10 @@ The current precedence model is:
 5. Language standards
 6. Application-type standards
 7. Framework standards
-8. Response style
-9. Persona
+8. Project-specific skills
+9. Global skills
+10. Response style
+11. Persona
 
 Lower-precedence layers may refine earlier layers, but may not contradict or
 weaken them.
@@ -60,20 +63,23 @@ aie-os/
     src/
     templates/
   knowledge-base/
+  skills/
 ```
 
 - `knowledge-base/10-engineering-principles/` contains reusable engineering
   principles.
 - `knowledge-base/20-coding-standards/` contains reusable coding standards.
 - `agent/` contains reusable behavior configuration: style and persona.
+- `skills/` contains reusable global skills.
+- Project-specific skills live in each target repository under `.ai/skills/`.
 - `cli/` contains the package-ready TypeScript builder and delivery adapters.
 
 ## Current Commands
 
 The first CLI version supports:
 
-- `aie-os init --tool codex --project-path /path/to/repo --kb-path /path/to/knowledge-base`
-- `aie-os build --tool codex --project-path /path/to/repo --kb-path /path/to/knowledge-base`
+- `aie-os init --tool codex --project-path /path/to/repo --kb-path /path/to/knowledge-base --skills-path /path/to/skills`
+- `aie-os build --tool codex --project-path /path/to/repo --kb-path /path/to/knowledge-base --skills-path /path/to/skills`
 
 `init` scaffolds the repo-local `.ai` files and then runs `build`.
 
@@ -84,9 +90,11 @@ The first CLI version supports:
 
 When running the CLI from this repository, the default knowledge-base path is
 the sibling `knowledge-base/` directory and the default agent path is the
-sibling `agent/` directory.
+sibling `agent/` directory. The default skills path is the sibling `skills/`
+directory.
 When the CLI is installed independently, pass `--kb-path` and, if needed,
-`--agent-path`, or set `AIE_OS_KB_PATH` and `AIE_OS_AGENT_PATH`.
+`--agent-path` and `--skills-path`, or set `AIE_OS_KB_PATH`,
+`AIE_OS_AGENT_PATH`, and `AIE_OS_SKILLS_PATH`.
 
 ## Developing The CLI
 

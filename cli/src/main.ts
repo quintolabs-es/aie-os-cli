@@ -18,6 +18,7 @@ type ParsedOptions = {
   help: boolean;
   kbPath?: string;
   projectPath?: string;
+  skillsPath?: string;
   tool?: string;
 };
 
@@ -26,6 +27,7 @@ export type ExecutionOptions = {
   command: CommandName;
   kbPath: string;
   projectPath: string;
+  skillsPath: string;
   templatePath: string;
   tool: ToolName;
 };
@@ -36,19 +38,21 @@ const INIT_TEMPLATE_FILES = [
   "project-context.md",
   "architecture.md",
   "conventions.md",
+  path.join("skills", "README.md"),
 ] as const;
 
 export const usageText = `AIE OS
 
 Usage:
-  aie-os init --tool codex --project-path <path> [--kb-path <path>] [--agent-path <path>]
-  aie-os build --tool codex --project-path <path> [--kb-path <path>] [--agent-path <path>]
+  aie-os init --tool codex --project-path <path> [--kb-path <path>] [--agent-path <path>] [--skills-path <path>]
+  aie-os build --tool codex --project-path <path> [--kb-path <path>] [--agent-path <path>] [--skills-path <path>]
 
 Options:
   --tool          Delivery adapter target. Only codex is supported in v1.
   --project-path  Target repository to scaffold or build.
   --kb-path       Knowledge base root. Defaults to AIE_OS_KB_PATH or ../knowledge-base when available.
   --agent-path    Agent configuration root. Defaults to AIE_OS_AGENT_PATH or ../agent next to the KB.
+  --skills-path   Global skills root. Defaults to AIE_OS_SKILLS_PATH or ../skills next to the KB.
   -h, --help      Show help.`;
 
 export function parseCommandInput(argv: string[]): ParsedOptions {
@@ -100,6 +104,9 @@ export function parseCommandInput(argv: string[]): ParsedOptions {
       case "--agent-path":
         parsed.agentPath = value;
         break;
+      case "--skills-path":
+        parsed.skillsPath = value;
+        break;
       default:
         throw new Error(`Unknown option: ${argument}`);
     }
@@ -120,6 +127,7 @@ export function resolveExecutionOptions(
       command: parsed.command,
       kbPath: "",
       projectPath: "",
+      skillsPath: "",
       templatePath: "",
       tool: TOOL_NAME,
     };
@@ -140,6 +148,7 @@ export function resolveExecutionOptions(
   const projectPath = path.resolve(cwd, parsed.projectPath);
   const kbPath = resolveKbPath(cwd, parsed.kbPath);
   const agentPath = resolveAgentPath(cwd, parsed.agentPath, kbPath);
+  const skillsPath = resolveSkillsPath(cwd, parsed.skillsPath, kbPath);
   const templatePath = resolveTemplatePath();
 
   return {
@@ -147,6 +156,7 @@ export function resolveExecutionOptions(
     command: parsed.command,
     kbPath,
     projectPath,
+    skillsPath,
     templatePath,
     tool: TOOL_NAME,
   };
@@ -156,6 +166,7 @@ export async function initProject(options: ExecutionOptions): Promise<void> {
   await ensureProjectDirectory(options.projectPath);
   await ensureKbDirectory(options.kbPath);
   await ensureAgentDirectory(options.agentPath);
+  await ensureSkillsDirectory(options.skillsPath);
   await ensureTemplateDirectory(options.templatePath);
 
   const aiDirectory = path.join(options.projectPath, ".ai");
@@ -174,6 +185,7 @@ export async function buildProject(options: ExecutionOptions): Promise<void> {
   await ensureProjectDirectory(options.projectPath);
   await ensureKbDirectory(options.kbPath);
   await ensureAgentDirectory(options.agentPath);
+  await ensureSkillsDirectory(options.skillsPath);
 
   const manifestPath = path.join(options.projectPath, ".ai", "manifest.yaml");
   if (!(await fileExists(manifestPath))) {
@@ -188,6 +200,7 @@ export async function buildProject(options: ExecutionOptions): Promise<void> {
     kbPath: options.kbPath,
     manifest,
     projectPath: options.projectPath,
+    skillsPath: options.skillsPath,
     tool: options.tool,
   });
 
@@ -235,6 +248,23 @@ function resolveTemplatePath(): string {
   return path.resolve(__dirname, "..", "templates", "project");
 }
 
+function resolveSkillsPath(
+  cwd: string,
+  explicitSkillsPath: string | undefined,
+  kbPath: string,
+): string {
+  if (explicitSkillsPath) {
+    return path.resolve(cwd, explicitSkillsPath);
+  }
+
+  const environmentSkillsPath = process.env.AIE_OS_SKILLS_PATH;
+  if (environmentSkillsPath) {
+    return path.resolve(cwd, environmentSkillsPath);
+  }
+
+  return path.resolve(kbPath, "..", "skills");
+}
+
 async function copyTemplateIfMissing(
   sourcePath: string,
   targetPath: string,
@@ -257,6 +287,10 @@ async function ensureKbDirectory(kbPath: string): Promise<void> {
 
 async function ensureAgentDirectory(agentPath: string): Promise<void> {
   await ensureDirectoryType(agentPath, "Agent configuration path");
+}
+
+async function ensureSkillsDirectory(skillsPath: string): Promise<void> {
+  await ensureDirectoryType(skillsPath, "Skills path");
 }
 
 async function ensureTemplateDirectory(templatePath: string): Promise<void> {

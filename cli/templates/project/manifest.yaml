@@ -12,7 +12,12 @@ standards:
     - coding-standards
     - testing-standards
   languages: []
+  applicationTypes: []
   frameworks: []
+
+skills:
+  global: []
+  project: []
 
 repoContext:
   - project-context.md

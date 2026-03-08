@@ -4,7 +4,12 @@ export type Manifest = {
   persona: string;
   principles: string[];
   repoContext: string[];
+  skills: {
+    global: string[];
+    project: string[];
+  };
   standards: {
+    applicationTypes: string[];
     core: string[];
     frameworks: string[];
     languages: string[];
@@ -156,12 +161,22 @@ function parseScalar(value: string): ParsedNode {
 
 function normalizeManifest(rawManifest: ParsedMap, manifestPath: string): Manifest {
   const standards = expectMap(rawManifest.standards, "standards", manifestPath);
+  const skills = expectOptionalMap(rawManifest.skills, "skills", manifestPath);
 
   return {
     persona: expectString(rawManifest.persona, "persona", manifestPath),
     principles: expectList(rawManifest.principles, "principles", manifestPath),
     repoContext: expectList(rawManifest.repoContext, "repoContext", manifestPath),
+    skills: {
+      global: expectOptionalList(skills?.global, "skills.global", manifestPath),
+      project: expectOptionalList(skills?.project, "skills.project", manifestPath),
+    },
     standards: {
+      applicationTypes: expectOptionalList(
+        standards.applicationTypes,
+        "standards.applicationTypes",
+        manifestPath,
+      ),
       core: expectList(standards.core, "standards.core", manifestPath),
       frameworks: expectList(standards.frameworks, "standards.frameworks", manifestPath),
       languages: expectList(standards.languages, "standards.languages", manifestPath),
@@ -187,6 +202,18 @@ function expectList(
   return value;
 }
 
+function expectOptionalList(
+  value: ParsedNode | undefined,
+  fieldName: string,
+  manifestPath: string,
+): string[] {
+  if (value === undefined) {
+    return [];
+  }
+
+  return expectList(value, fieldName, manifestPath);
+}
+
 function expectMap(
   value: ParsedNode | undefined,
   fieldName: string,
@@ -201,6 +228,18 @@ function expectMap(
   }
 
   return value;
+}
+
+function expectOptionalMap(
+  value: ParsedNode | undefined,
+  fieldName: string,
+  manifestPath: string,
+): ParsedMap | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return expectMap(value, fieldName, manifestPath);
 }
 
 function expectNumber(

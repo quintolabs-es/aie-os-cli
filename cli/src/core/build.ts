@@ -7,6 +7,7 @@ export type BuildInput = {
   kbPath: string;
   manifest: Manifest;
   projectPath: string;
+  skillsPath: string;
   tool: "codex";
 };
 
@@ -99,6 +100,23 @@ async function resolveSections(input: BuildInput): Promise<BuildSection[]> {
     );
   }
 
+  for (const applicationType of input.manifest.standards.applicationTypes) {
+    sections.push(
+      await loadSection(
+        input.kbPath,
+        path.join("20-coding-standards", "30-application-type", `${applicationType}.md`),
+        path.join(
+          "knowledge-base",
+          "20-coding-standards",
+          "30-application-type",
+          `${applicationType}.md`,
+        ),
+        applicationType,
+        "Application-Type Standards",
+      ),
+    );
+  }
+
   for (const framework of input.manifest.standards.frameworks) {
     sections.push(
       await loadSection(
@@ -107,6 +125,30 @@ async function resolveSections(input: BuildInput): Promise<BuildSection[]> {
         path.join("knowledge-base", "20-coding-standards", "40-framework", `${framework}.md`),
         framework,
         "Framework Standards",
+      ),
+    );
+  }
+
+  for (const projectSkill of input.manifest.skills.project) {
+    sections.push(
+      await loadSection(
+        path.join(input.projectPath, ".ai"),
+        path.join("skills", `${projectSkill}.md`),
+        path.join(".ai", "skills", `${projectSkill}.md`),
+        projectSkill,
+        "Project Skills",
+      ),
+    );
+  }
+
+  for (const globalSkill of input.manifest.skills.global) {
+    sections.push(
+      await loadSection(
+        input.skillsPath,
+        path.join("global", `${globalSkill}.md`),
+        path.join("skills", "global", `${globalSkill}.md`),
+        globalSkill,
+        "Global Skills",
       ),
     );
   }
@@ -165,7 +207,10 @@ function renderContextDocument(input: {
     `- Principles: ${formatList(input.manifest.principles)}`,
     `- Core standards: ${formatList(input.manifest.standards.core)}`,
     `- Language standards: ${formatList(input.manifest.standards.languages)}`,
+    `- Application-type standards: ${formatList(input.manifest.standards.applicationTypes)}`,
     `- Framework standards: ${formatList(input.manifest.standards.frameworks)}`,
+    `- Project skills: ${formatList(input.manifest.skills.project)}`,
+    `- Global skills: ${formatList(input.manifest.skills.global)}`,
     `- Repo context: ${formatList(input.manifest.repoContext)}`,
   ].join("\n");
 
