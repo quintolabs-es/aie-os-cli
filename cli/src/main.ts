@@ -3,7 +3,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
-import { buildAgentContext, buildCodexAdapter } from "./core/build";
+import { getAdapter } from "./core/agentAdapters";
+import { buildAgentContext } from "./core/build";
 import {
   ensureDirectory,
   fileExists,
@@ -54,7 +55,8 @@ type InitSelections = {
 };
 
 const PROJECT_AIE_DIRECTORY = ".aie-os";
-const MANIFEST_NAME = "manifest.yaml";
+const BUILD_DIRECTORY = "build";
+const MANIFEST_NAME = "aie-os.json";
 const TOOL_NAME = "codex";
 
 export const usageText = `AIE OS
@@ -228,15 +230,25 @@ export async function buildProject(options: BuildExecutionOptions): Promise<void
     projectPath: options.projectPath,
     tool: options.tool,
   });
+  const adapter = getAdapter(options.tool);
+  const adapterOutput = adapter.build({
+    effectiveContext: buildOutput.effectiveContext,
+    effectiveContextMarkdown: buildOutput.effectiveContextMarkdown,
+    projectPath: options.projectPath,
+  });
 
   await writeText(
-    path.join(options.projectPath, PROJECT_AIE_DIRECTORY, "agent-context.md"),
-    buildOutput.agentContext,
+    path.join(options.projectPath, PROJECT_AIE_DIRECTORY, BUILD_DIRECTORY, "effective-context.md"),
+    buildOutput.effectiveContextMarkdown,
   );
   await writeText(
-    path.join(options.projectPath, "AGENTS.md"),
-    buildCodexAdapter(buildOutput),
+    path.join(options.projectPath, PROJECT_AIE_DIRECTORY, BUILD_DIRECTORY, "effective-context.json"),
+    `${JSON.stringify(buildOutput.effectiveContext, null, 2)}\n`,
   );
+
+  for (const file of adapterOutput.files) {
+    await writeText(path.join(options.projectPath, file.path), file.contents);
+  }
 }
 
 function detectInitDefaults(projectPath: string): InitPromptDefaults {

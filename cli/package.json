@@ -9,9 +9,9 @@
   "main": "./dist/index.js",
   "files": [
     "dist",
-    "build.sh",
-    "init.sh",
-    "setup.sh"
+    "build-agent-context.sh",
+    "build-cli.sh",
+    "init-aie-os.sh"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",

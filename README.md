@@ -35,14 +35,17 @@ aie-os/
 xample-app/
   aie-os/
   .aie-os/
-    manifest.yaml
+    aie-os.json
     project-context/
     project-coding-standards/
     project-skills/
-    agent-context.md
+    build/
+      effective-context.json
+      effective-context.md
+  AGENTS.md
 ```
 
-- `aie-os/` is the visible local clone of this repo.
+- `aie-os/` is the local clone of this repo.
 - `.aie-os/` contains project-local AIE OS configuration and generated files.
 
 ## Usage
@@ -56,6 +59,9 @@ bash aie-os/cli/init-aie-os.sh
 bash aie-os/cli/build-agent-context.sh --tool codex
 ```
 
-- `init-aie-os.sh` prompts for every parameter and writes `.aie-os/manifest.yaml`.
-- `build-agent-context.sh --tool codex` reads the manifest and generates `.aie-os/agent-context.md`
-  and `AGENTS.md`.
+- `init-aie-os.sh` prompts for every parameter, creates the `.aie-os/` folder
+  structure, and writes `.aie-os/aie-os.json`.
+- `build-agent-context.sh --tool codex` reads `.aie-os/aie-os.json`, generates
+  `.aie-os/build/effective-context.json` and `.aie-os/build/effective-context.md`,
+  then passes the canonical context into the selected adapter.
+- The `codex` adapter writes `AGENTS.md`.

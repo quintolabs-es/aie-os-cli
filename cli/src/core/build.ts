@@ -1,6 +1,7 @@
 import path from "node:path";
 import { listMarkdownFiles, readText } from "./files";
 import type { Manifest } from "./manifest";
+import type { EffectiveContext, EffectiveContextSection } from "./agentAdapters";
 
 export type BuildInput = {
   manifest: Manifest;
@@ -8,48 +9,35 @@ export type BuildInput = {
   tool: "codex";
 };
 
-type BuildSection = {
-  body: string;
-  heading: string;
-  layer: string;
-  source: string;
-};
-
 export type BuildOutput = {
-  agentContext: string;
+  effectiveContext: EffectiveContext;
+  effectiveContextMarkdown: string;
   manifest: Manifest;
-  sections: BuildSection[];
   tool: "codex";
 };
 
 export async function buildAgentContext(input: BuildInput): Promise<BuildOutput> {
   const sections = await resolveSections(input);
+  const effectiveContext: EffectiveContext = {
+    manifest: input.manifest,
+    sections,
+    version: 1,
+  };
 
   return {
-    agentContext: renderContextDocument({
-      manifest: input.manifest,
-      sections,
+    effectiveContext,
+    effectiveContextMarkdown: renderEffectiveContextMarkdown({
+      effectiveContext,
       title: "# Agent Context",
       tool: input.tool,
     }),
     manifest: input.manifest,
-    sections,
     tool: input.tool,
   };
 }
 
-export function buildCodexAdapter(output: BuildOutput): string {
-  return renderContextDocument({
-    manifest: output.manifest,
-    note: "Canonical source: `.aie-os/agent-context.md`.",
-    sections: output.sections,
-    title: "# AGENTS",
-    tool: output.tool,
-  });
-}
-
-async function resolveSections(input: BuildInput): Promise<BuildSection[]> {
-  const sections: BuildSection[] = [];
+async function resolveSections(input: BuildInput): Promise<EffectiveContextSection[]> {
+  const sections: EffectiveContextSection[] = [];
   const projectPath = input.projectPath;
   const knowledgeBasePath = resolveProjectPath(projectPath, input.manifest.paths.knowledgeBase);
   const agentPath = resolveProjectPath(projectPath, input.manifest.paths.agent);
@@ -170,7 +158,7 @@ async function loadDirectorySections(
   directoryPath: string,
   projectPath: string,
   layer: string,
-): Promise<BuildSection[]> {
+): Promise<EffectiveContextSection[]> {
   const files = await listMarkdownFiles(directoryPath);
 
   return Promise.all(
@@ -188,7 +176,7 @@ async function loadSingleFileSection(
   projectPath: string,
   heading: string,
   layer: string,
-): Promise<BuildSection> {
+): Promise<EffectiveContextSection> {
   return {
     body: await readText(filePath),
     heading,
@@ -216,29 +204,28 @@ function resolveOptionalProjectPath(
   return resolveProjectPath(projectPath, configuredPath);
 }
 
-function renderContextDocument(input: {
-  manifest: Manifest;
+export function renderEffectiveContextMarkdown(input: {
+  effectiveContext: EffectiveContext;
   note?: string;
-  sections: BuildSection[];
   title: string;
   tool: "codex";
 }): string {
   const buildInputs = [
     `- Tool: ${input.tool}`,
-    `- Persona: ${input.manifest.selection.persona}`,
-    `- Style: ${input.manifest.selection.style}`,
-    `- Language: ${input.manifest.selection.language}`,
-    `- Application type: ${input.manifest.selection.applicationType}`,
-    `- Frameworks: ${formatList(input.manifest.selection.frameworks)}`,
-    `- Knowledge base path: ${input.manifest.paths.knowledgeBase}`,
-    `- Agent path: ${input.manifest.paths.agent}`,
-    `- Global skills path: ${formatValue(input.manifest.paths.globalSkills)}`,
-    `- Project context path: ${input.manifest.paths.projectContext}`,
-    `- Project coding standards path: ${input.manifest.paths.projectCodingStandards}`,
-    `- Project skills path: ${input.manifest.paths.projectSkills}`,
+    `- Persona: ${input.effectiveContext.manifest.selection.persona}`,
+    `- Style: ${input.effectiveContext.manifest.selection.style}`,
+    `- Language: ${input.effectiveContext.manifest.selection.language}`,
+    `- Application type: ${input.effectiveContext.manifest.selection.applicationType}`,
+    `- Frameworks: ${formatList(input.effectiveContext.manifest.selection.frameworks)}`,
+    `- Knowledge base path: ${input.effectiveContext.manifest.paths.knowledgeBase}`,
+    `- Agent path: ${input.effectiveContext.manifest.paths.agent}`,
+    `- Global skills path: ${formatValue(input.effectiveContext.manifest.paths.globalSkills)}`,
+    `- Project context path: ${input.effectiveContext.manifest.paths.projectContext}`,
+    `- Project coding standards path: ${input.effectiveContext.manifest.paths.projectCodingStandards}`,
+    `- Project skills path: ${input.effectiveContext.manifest.paths.projectSkills}`,
   ].join("\n");
 
-  const renderedSections = input.sections
+  const renderedSections = input.effectiveContext.sections
     .map((section, index) =>
       [
         `## ${index + 1}. ${section.layer}: ${section.heading}`,
