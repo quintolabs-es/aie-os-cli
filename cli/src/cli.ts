@@ -389,10 +389,11 @@ async function collectSelections(
   });
 
   const applicationType = await promptSelect(reader, {
-    defaultValue: "none",
+    allowNone: true,
+    defaultValue: null,
     explanation: "Application type selects standards for the shape of the application, such as api or mobile.",
     label: "Application type",
-    options: ["none", ...applicationTypeOptions],
+    options: applicationTypeOptions,
   });
 
   const frameworks = await promptMultiSelect(reader, {
@@ -518,6 +519,7 @@ async function promptOptionalPath(
 async function promptSelect(
   reader: readline.Interface,
   input: {
+    allowNone?: boolean;
     defaultValue: string | null;
     explanation: string;
     label: string;
@@ -533,15 +535,24 @@ async function promptSelect(
     const defaultMarker = option === input.defaultValue ? " (default)" : "";
     output.write(`${index + 1}) ${option}${defaultMarker}\n`);
   });
+  if (input.allowNone && input.defaultValue === null) {
+    output.write("Default: none\n");
+  }
 
   while (true) {
-    const prompt = input.defaultValue
+    const prompt = input.defaultValue || input.allowNone
       ? "Select an option by number or name, or press Enter for the default: "
       : "Select an option by number or name: ";
     const answer = (await reader.question(prompt)).trim();
 
-    if (answer === "" && input.defaultValue) {
-      return input.defaultValue;
+    if (answer === "") {
+      if (input.defaultValue) {
+        return input.defaultValue;
+      }
+
+      if (input.allowNone) {
+        return "none";
+      }
     }
 
     const selected = resolveSingleOption(answer, input.options);
