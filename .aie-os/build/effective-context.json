@@ -1,0 +1,66 @@
+{
+  "manifest": {
+    "version": "0.1",
+    "paths": {
+      "knowledgeBase": "content/knowledge-base",
+      "agent": "content/agent",
+      "skills": "content/skills",
+      "projectCodingStandards": ".aie-os/project-coding-standards",
+      "projectSkills": ".aie-os/project-skills"
+    },
+    "selection": {
+      "persona": "software-developer",
+      "style": "concise-collaborative",
+      "languages": [
+        "typescript"
+      ],
+      "applicationTypes": [],
+      "frameworks": []
+    }
+  },
+  "sections": [
+    {
+      "file": "/Users/luismesa/Documents/src/aie-os/content/knowledge-base/engineering-principles/universal/engineering-principles.md",
+      "heading": "engineering-principles",
+      "layer": "Engineering Principles",
+      "source": "content/knowledge-base/engineering-principles/universal/engineering-principles.md"
+    },
+    {
+      "file": "/Users/luismesa/Documents/src/aie-os/content/knowledge-base/coding-standards/universal/coding-standards.md",
+      "heading": "coding-standards",
+      "layer": "Shared Coding Standards",
+      "source": "content/knowledge-base/coding-standards/universal/coding-standards.md"
+    },
+    {
+      "file": "/Users/luismesa/Documents/src/aie-os/content/knowledge-base/coding-standards/universal/testing-standards.md",
+      "heading": "testing-standards",
+      "layer": "Shared Coding Standards",
+      "source": "content/knowledge-base/coding-standards/universal/testing-standards.md"
+    },
+    {
+      "file": "/Users/luismesa/Documents/src/aie-os/content/knowledge-base/coding-standards/language/typescript/typescript.md",
+      "heading": "typescript",
+      "layer": "Language Standards",
+      "source": "content/knowledge-base/coding-standards/language/typescript/typescript.md"
+    },
+    {
+      "file": ".aie-os/project-skills/add-tool-adapter/SKILL.md",
+      "heading": "SKILL",
+      "layer": "Project Skills",
+      "source": ".aie-os/project-skills/add-tool-adapter/SKILL.md"
+    },
+    {
+      "file": "/Users/luismesa/Documents/src/aie-os/content/agent/style/concise-collaborative.md",
+      "heading": "concise-collaborative",
+      "layer": "Response Style",
+      "source": "content/agent/style/concise-collaborative.md"
+    },
+    {
+      "file": "/Users/luismesa/Documents/src/aie-os/content/agent/persona/software-developer.md",
+      "heading": "software-developer",
+      "layer": "Persona",
+      "source": "content/agent/persona/software-developer.md"
+    }
+  ],
+  "version": "0.1"
+}
