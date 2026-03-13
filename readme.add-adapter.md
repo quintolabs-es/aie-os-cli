@@ -14,18 +14,18 @@ An adapter must not:
 - parse `effective-context.md`
 - write files directly
 
-### Minimal steps
+### Architecture
 
-1. Create a new adapter file under:
+The extension model is:
+
+1. one adapter file under:
    - `cli/src/core/agentAdapters/<tool>Adapter.ts`
-2. Export an adapter object:
-   - `tool`
-   - `build(input) => { files, primaryArtifact }`
-3. Register it in:
+2. one static registry entry in:
    - `cli/src/core/agentAdapters/index.ts`
-4. Extend the supported tool type in:
+3. one supported tool type update in:
    - `cli/src/core/agentAdapters/types.ts`
-   - CLI parsing/help if the tool should be selectable from `build --tool`
+4. CLI support in:
+   - `cli/src/cli.ts`
 
 ### Adapter input
 
@@ -42,6 +42,36 @@ An adapter must not:
   - main generated file name, for example `AGENTS.md`
 
 The CLI passes this output to the artifact writer, which is the only component that writes files to disk.
+
+### Project skill
+
+This project already has a local skill for adding a new adapter:
+
+- `.aie-os/project-skills/add-tool-adapter/SKILL.md`
+
+Use that skill when the intent is to add support for a new tool in this repo.
+
+Typical trigger phrasing:
+
+- add a new adapter for a new tool
+- support a new tool
+- add a tool adapter
+
+The skill owns the deterministic contributor workflow:
+
+- scaffold the adapter file
+- update the static registry
+- update the supported tool type
+- update CLI tool wiring
+- update CLI help text
+
+### What remains manual
+
+After the skill scaffolds the new tool, the contributor still needs to:
+
+- implement the tool-specific rendering logic in the generated adapter file
+- replace the placeholder output path and contents
+- build and test the new adapter
 
 ### Minimal example
 
@@ -78,4 +108,4 @@ const adapters = {
 };
 ```
 
-One adapter file plus one registry line is the intended extension path.
+One adapter file plus one registry line is the intended extension path. The project skill automates the rest of the deterministic setup.
