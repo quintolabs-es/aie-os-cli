@@ -13,7 +13,6 @@ export type Manifest = {
     frameworks: string[];
     languages: string[];
     persona: string;
-    style: string;
   };
   version: string;
 };
@@ -61,7 +60,6 @@ function normalizeManifest(rawManifest: unknown, manifestPath: string): Manifest
     },
     selection: {
       persona: expectString(selection.persona, "selection.persona", manifestPath),
-      style: expectString(selection.style, "selection.style", manifestPath),
       languages: expectStringArray(
         selection.languages,
         "selection.languages",

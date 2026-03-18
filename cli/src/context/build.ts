@@ -149,12 +149,11 @@ async function resolveContext(input: BuildInput): Promise<{
   skills.push(...(await loadSkillDefinitions(projectSkillsPath, projectPath, "project")));
 
   sections.push(
-    await loadSingleFileSection(
-      path.join(agentPath, "style", `${input.manifest.selection.style}.md`),
+    ...(await loadOptionalDirectorySections(
+      path.join(agentPath, "universal"),
       projectPath,
-      input.manifest.selection.style,
-      "Response Style",
-    ),
+      "Universal Agent Rules",
+    )),
   );
 
   sections.push(
@@ -182,6 +181,18 @@ async function loadDirectorySections(
   return Promise.all(
     files.map(async (filePath) => createEffectiveContextSection(filePath, projectPath, layer)),
   );
+}
+
+async function loadOptionalDirectorySections(
+  directoryPath: string,
+  projectPath: string,
+  layer: string,
+): Promise<EffectiveContextSection[]> {
+  if (!(await fileExists(directoryPath))) {
+    return [];
+  }
+
+  return loadDirectorySections(directoryPath, projectPath, layer);
 }
 
 async function loadConditionalSections(
@@ -649,7 +660,6 @@ export async function renderEffectiveContextMarkdown(input: {
   const buildInputs = [
     `- Tool: ${input.tool}`,
     `- Persona: ${input.effectiveContext.manifest.selection.persona}`,
-    `- Style: ${input.effectiveContext.manifest.selection.style}`,
     `- Languages: ${formatList(input.effectiveContext.manifest.selection.languages)}`,
     `- Application types: ${formatList(input.effectiveContext.manifest.selection.applicationTypes)}`,
     `- Frameworks: ${formatList(input.effectiveContext.manifest.selection.frameworks)}`,

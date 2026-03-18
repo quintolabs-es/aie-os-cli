@@ -4,9 +4,9 @@ The `content/agent/` directory contains shared agent configuration.
 
 ```text
 content/agent/
-  style/
+  universal/
   persona/
 ```
 
-- `style/` defines how the agent communicates.
-- `persona/` defines the agent role and behavior mode.
+- `universal/` defines agent-wide operational rules that apply across all personas.
+- `persona/` defines the agent role, behavior mode, and communication style.

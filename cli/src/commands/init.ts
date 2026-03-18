@@ -80,7 +80,7 @@ async function collectManifest(
     ? providedPaths.agentPath
     : await promptPath(reader, {
         defaultValue: defaults.agentPath,
-        description: "AIE OS reads persona and style definitions from this folder.",
+        description: "AIE OS reads persona definitions from this folder.",
         promptLabel: "agent path",
         optionName: "--agent-path",
         projectPath,
@@ -136,7 +136,6 @@ async function collectSelections(
   const resolvedKnowledgeBasePath = resolveAgainstProject(projectPath, input.knowledgeBasePath);
 
   const personaOptions = await listMarkdownBasenames(path.join(resolvedAgentPath, "persona"));
-  const styleOptions = await listMarkdownBasenames(path.join(resolvedAgentPath, "style"));
   const languageOptions = await listDirectoryNames(path.join(resolvedKnowledgeBasePath, "coding-standards", "language"));
   const applicationTypeOptions = await listDirectoryNames(path.join(resolvedKnowledgeBasePath, "coding-standards", "application-type"));
   const frameworkOptions = await listDirectoryNames(path.join(resolvedKnowledgeBasePath, "coding-standards", "framework"));
@@ -149,15 +148,6 @@ async function collectSelections(
       explanation: "Persona defines the agent role and behavioral mode.",
       label: "Persona",
       options: personaOptions,
-    }));
-
-  const style =
-    validateSingleSelection(initial.style, styleOptions, "agent style") ??
-    (await promptSelect(reader, {
-      defaultValue: styleOptions.includes("concise-collaborative") ? "concise-collaborative" : (styleOptions[0] ?? null),
-      explanation: "Style defines how the agent communicates.",
-      label: "Style",
-      options: styleOptions,
     }));
 
   const languages =
@@ -195,7 +185,6 @@ async function collectSelections(
     frameworks,
     languages,
     persona,
-    style,
   };
 }
 

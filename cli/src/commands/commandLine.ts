@@ -7,7 +7,7 @@ const TOOL_NAME: ToolName = "codex";
 export const usageText = `AIE OS
 
 Usage:
-  init [--project-path <path>] [--kb-path <path>] [--agent-path <path>] [--skills-path <path>] [--agent-persona <name>] [--agent-style <name>] [--languages <a,b>] [--application-type <a,b>] [--frameworks <a,b>]
+  init [--project-path <path>] [--kb-path <path>] [--agent-path <path>] [--skills-path <path>] [--agent-persona <name>] [--languages <a,b>] [--application-type <a,b>] [--frameworks <a,b>]
   build --tool codex [--project-path <path>]
 
 Options:
@@ -16,7 +16,6 @@ Options:
   --agent-path                      Shared agent path. Prompted explicitly during init if not provided.
   --skills-path                     Shared skills path. Prompted explicitly during init if not provided.
   --agent-persona                   Agent persona. Prompted during init if not provided.
-  --agent-style                     Agent style. Prompted during init if not provided.
   --languages                       Comma-separated languages. Prompted during init if not provided.
   --application-type                Comma-separated application types. Prompted during init if not provided.
   --frameworks                      Comma-separated frameworks. Prompted during init if not provided.
@@ -115,7 +114,6 @@ export function resolveExecutionOptions(
     "--agent-path",
     "--skills-path",
     "--agent-persona",
-    "--agent-style",
     "--languages",
     "--application-type",
     "--frameworks",
@@ -136,7 +134,6 @@ export function resolveExecutionOptions(
       frameworks: parseCsvSelections(parsed.options["--frameworks"]),
       languages: parseCsvSelections(parsed.options["--languages"]),
       persona: normalizeOptionalSelection(parsed.options["--agent-persona"]),
-      style: normalizeOptionalSelection(parsed.options["--agent-style"]),
     },
     providedPaths: {
       agentPath: normalizeCliPathOption(cwd, projectPath, parsed.options["--agent-path"]),

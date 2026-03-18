@@ -3,8 +3,8 @@
 `AIE OS` standardizes reusable engineering knowledge, reusable agent configuration, reusable skills, and deterministic context delivery for coding agents.
 
 ## How AIE-OS works
-On `init`, it captures the project configuration, including the project path, shared root paths (`kb`, `agent`, `skills`), selected persona, selected style, selected languages, selected application types, and selected frameworks.
-On `build` it uses init information to collect shared engineering principles, shared coding standards, language/application-type/framework-specific standards from the provided knowledge base, project-specific coding standards and skills, and agent persona/style to build **one canonical context**. Skills are expected to follow the Agent Skills packaging specification at https://agentskills.io/specification, but AIE OS integrates them by folder rather than validating their internals. Then the selected agent adapter turns that canonical context into agent-specific artifacts such as `AGENTS.md`.
+On `init`, it captures the project configuration, including the project path, shared root paths (`kb`, `agent`, `skills`), selected persona, selected languages, selected application types, and selected frameworks.
+On `build` it uses init information to collect shared engineering principles, shared coding standards, language/application-type/framework-specific standards from the provided knowledge base, project-specific coding standards and skills, and the selected agent persona to build **one canonical context**. Skills are expected to follow the Agent Skills packaging specification at https://agentskills.io/specification, but AIE OS integrates them by folder rather than validating their internals. Then the selected agent adapter turns that canonical context into agent-specific artifacts such as `AGENTS.md`.
 
 The shared content structure is intentionally simple: add clear, direct, reusable files under the appropriate folders so `init` can discover options from folder names and `build` can resolve them deterministically.
 
@@ -25,8 +25,8 @@ xample-app/
       effective-context.md
 ```
 
-- `aie-os/` is the local clone of this repo.
-- `.aie-os/` contains project-local AIE OS configuration and generated artifacts.
+- `aie-os/` is the local clone of this repo. ignore it in `.gitignore`.
+- `.aie-os/` contains project-local AIE OS configuration and generated artifacts. keep it versioned in the project repo.
 
 
 ## Building Context

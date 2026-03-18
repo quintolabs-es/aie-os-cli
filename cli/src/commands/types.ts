@@ -26,7 +26,6 @@ export type InitSelections = {
   frameworks: string[];
   languages: string[];
   persona: string;
-  style: string;
 };
 
 export type InitExecutionOptions = {

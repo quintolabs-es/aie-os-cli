@@ -4,13 +4,12 @@
 AIE OS builds context from three shared sources plus two project-local sources:
 
 - knowledge base root (`--kb-path`)
-  - mandatory structure:
+  - folder structure:
     - `[kb-path]/engineering-principles/universal/*.md`
     - `[kb-path]/coding-standards/universal/*.md`
     - `[kb-path]/coding-standards/language/<name>/*.md`
     - `[kb-path]/coding-standards/application-type/<name>/*.md`
     - `[kb-path]/coding-standards/framework/<name>/*.md`
-  - optional structure:
     - `[kb-path]/coding-standards/conditional/*.md`
   - purpose:
     - engineering principles and coding standards shared across projects
@@ -20,8 +19,8 @@ AIE OS builds context from three shared sources plus two project-local sources:
 
 - agent root (`--agent-path`)
   - mandatory structure:
+    - `[agent-path]/universal/*.md`
     - `[agent-path]/persona/*.md`
-    - `[agent-path]/style/*.md`
   - purpose:
     - agent behavior configuration
 
@@ -46,6 +45,8 @@ Rules:
 - Make discovered option names legible, e.g., `language/csharp/*.md`, `application-type/console/*.md`, etc.
 - Shared content should stay reusable across many repositories. Put repo-specific commands and conventions in `.aie-os/project-coding-standards/`.
 - An application-type folder may exist only to expose a valid option name to `init`; use `conditional/` when the actual rules depend on a language + application-type combination.
+- Universal agent files should hold agent-wide operational rules that apply across all personas.
+- Persona files should define both the agent role and the communication style for that persona.
 - Skills should follow the Agent Skills packaging specification: https://agentskills.io/specification
 - AIE OS integrates skills by folder and does not validate skill internals beyond discovering the skill directory.
 - Add concise markdown files only. `README.md` is descriptive and ignored by `build`.
@@ -90,6 +91,8 @@ Rules:
 ### Recommended file structure
 
 Use a small fixed set of section headers. Add bullet points under the appropriate header.
+
+Persona files should begin with a short identity rule such as `You are ...`.
 
 - `## Purpose`
   - optional

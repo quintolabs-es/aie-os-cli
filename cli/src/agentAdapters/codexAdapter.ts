@@ -10,7 +10,8 @@ export const codexAdapter: Adapter = {
     const agentBehavior = renderSectionGroup(
       "Agent Behavior",
       input.effectiveContext.sections.filter(
-        (section) => section.layer === "Response Style" || section.layer === "Persona",
+        (section) =>
+          section.layer === "Universal Agent Rules" || section.layer === "Persona",
       ),
     );
     const projectRules = renderSectionGroup(
@@ -23,7 +24,7 @@ export const codexAdapter: Adapter = {
       "Shared Rules",
       input.effectiveContext.sections.filter(
         (section) =>
-          section.layer !== "Response Style" &&
+          section.layer !== "Universal Agent Rules" &&
           section.layer !== "Persona" &&
           section.layer !== "Project Coding Standards",
       ),
@@ -83,7 +84,6 @@ function renderWorkingProfile(effectiveContext: EffectiveContext): string {
     "## Working Profile",
     "",
     `- Persona: ${selection.persona}`,
-    `- Style: ${selection.style}`,
     `- Languages: ${formatList(selection.languages)}`,
     `- Application types: ${formatList(selection.applicationTypes)}`,
     `- Frameworks: ${formatList(selection.frameworks)}`,

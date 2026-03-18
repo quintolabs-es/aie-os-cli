@@ -8,12 +8,13 @@
     "projectSkills": ".aie-os/project-skills"
   },
   "selection": {
-    "applicationTypes": [],
+    "applicationTypes": [
+      "cli"
+    ],
     "frameworks": [],
     "languages": [
       "typescript"
     ],
-    "persona": "software-developer",
-    "style": "concise-collaborative"
+    "persona": "software-developer"
   }
 }

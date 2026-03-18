@@ -1,11 +1,11 @@
 ### First time setup aie-os cli
 ```bash
 cd xample-app
-git clone <aie-os-repo-url>
+git clone https://github.com/bustroker/aie-os
 npm --prefix aie-os/cli run build
 ```
 ### Create content
-Check `readme.create-content.md` for instructions on how to add principles, standards, skills, agent personas.
+Check `readme.create-content.md` for instructions on how to add principles, standards, skills, agent universal rules, and agent personas.
 
 ### Initialize AIE-OS
 ```bash
@@ -21,7 +21,6 @@ If all options are provided, `init` runs without prompting.
 * `--agent-path /path/to/agent/dir`: optional, prompted if not provided;
 * `--skills-path /path/to/skills/dir`: optional, prompted if not provided.
 * `--agent-persona <name>`: optional, prompted if not provided. Available values come from markdown file names under `[agent-path]/persona/`.
-* `--agent-style <name>`: optional, prompted if not provided. Available values come from markdown file names under `[agent-path]/style/`.
 * `--languages <name1,name2>`: optional, prompted if not provided. Available values come from folder names under `[kb-path]/coding-standards/language/`.
 * `--application-type <name1,name2>`: optional, prompted if not provided. Available values come from folder names under `[kb-path]/coding-standards/application-type/`.
 * `--frameworks <name1,name2>`: optional, prompted if not provided. Available values come from folder names under `[kb-path]/coding-standards/framework/`.
@@ -34,7 +33,6 @@ bash ./bin/aie-os init \
   --agent-path ./content/agent \
   --skills-path ./content/skills \
   --agent-persona software-developer \
-  --agent-style concise-collaborative \
   --languages csharp,typescript \
   --application-type api,mobile \
   --frameworks react-native
@@ -47,6 +45,10 @@ bash aie-os/bin/aie-os build --tool codex
 ```
 * `--tool`: mandatory. Accepts `codex`. More adapters can be added.
 * `--project-path /path/to/project` optional, defaults to current directory.
+
+### Bootstrap agent sessions
+
+After building the agent context, use `aie-os/bootstrap-promps.agents.md` as the first prompt in a new agent session so the agent reloads and follows the generated repository instructions from `AGENTS.md` before starting task work.
 
 ### Ignore AIE OS tool
 
@@ -71,4 +73,3 @@ For `--tool codex`:
 - AIE OS indexes all shared and project skills in `AGENTS.md`
 - each skill entry includes the skill name, copied `SKILL.md` path, and usage description
 - shared and project skills are copied into `.aie-os/build/skills/` so `AGENTS.md` references only project-local paths
-
