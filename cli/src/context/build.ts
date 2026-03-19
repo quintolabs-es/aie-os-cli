@@ -9,6 +9,7 @@ import type { Manifest } from "./manifest";
 import type {
   EffectiveContext,
   EffectiveContextBlock,
+  EffectiveContextInputs,
   EffectiveContextPersona,
   EffectiveContextSkill,
   EffectiveContextSkillScope,
@@ -22,7 +23,6 @@ export type BuildInput = {
 
 export type BuildOutput = {
   effectiveContext: EffectiveContext;
-  manifest: Manifest;
   tool: "codex";
 };
 
@@ -40,17 +40,18 @@ type LoadedBlocks = {
 export async function buildAgentContext(input: BuildInput): Promise<BuildOutput> {
   const resolvedContext = await resolveContext(input);
   const effectiveContext: EffectiveContext = {
-    criticalRules: resolvedContext.criticalRules,
-    manifest: input.manifest,
+    version: "0.1",
+    metadata: {
+      inputs: toEffectiveContextInputs(input.manifest),
+    },
     persona: resolvedContext.persona,
+    criticalRules: resolvedContext.criticalRules,
     sections: resolvedContext.sections,
     skills: resolvedContext.skills,
-    version: "0.1",
   };
 
   return {
     effectiveContext,
-    manifest: input.manifest,
     tool: input.tool,
   };
 }
@@ -183,6 +184,15 @@ async function resolveContext(input: BuildInput): Promise<{
 function pushLoadedBlocks(target: LoadedBlocks, loaded: LoadedBlocks): void {
   target.criticalRules.push(...loaded.criticalRules);
   target.sections.push(...loaded.sections);
+}
+
+function toEffectiveContextInputs(manifest: Manifest): EffectiveContextInputs {
+  return {
+    applicationTypes: [...manifest.selection.applicationTypes],
+    frameworks: [...manifest.selection.frameworks],
+    languages: [...manifest.selection.languages],
+    persona: manifest.selection.persona,
+  };
 }
 
 async function loadPersona(filePath: string, projectPath: string): Promise<EffectiveContextPersona> {

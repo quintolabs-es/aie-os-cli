@@ -1,2 +1,2 @@
 - review the structure of `effective-context.json`
-- understand how skills are handled and add to readme.md
+- how project specific rules are applied? add to readme.

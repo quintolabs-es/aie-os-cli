@@ -25,6 +25,8 @@ export type {
   EffectiveContext,
   EffectiveContextSkill,
   EffectiveContextSkillScope,
+  EffectiveContextInputs,
+  EffectiveContextMetadata,
   EffectiveContextPersona,
   SkillAdapterOutput,
   SkillCopyItem,

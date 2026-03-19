@@ -48,6 +48,7 @@ xample-app/
 - Canonical outputs:
   - `.aie-os/build/effective-context.json`
 - `effective-context.json` is the machine-readable canonical build artifact and adapter contract.
+- `effective-context.json` includes `metadata.inputs` as provenance about which persona, languages, application types, and frameworks were used to build the context.
 - Adapters write tool-specific artifacts only.
 
 ## Agent Adapters

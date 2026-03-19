@@ -1,5 +1,3 @@
-import type { Manifest } from "../context/manifest";
-
 export type AdapterTool = "codex";
 
 export type EffectiveContextBlock = {
@@ -14,6 +12,17 @@ export type EffectiveContextPersona = {
   source: string;
 };
 
+export type EffectiveContextInputs = {
+  applicationTypes: string[];
+  frameworks: string[];
+  languages: string[];
+  persona: string;
+};
+
+export type EffectiveContextMetadata = {
+  inputs: EffectiveContextInputs;
+};
+
 export type EffectiveContextSkillScope = "project" | "shared";
 
 export type EffectiveContextSkill = {
@@ -26,12 +35,12 @@ export type EffectiveContextSkill = {
 };
 
 export type EffectiveContext = {
-  criticalRules: EffectiveContextBlock[];
-  manifest: Manifest;
+  version: string;
+  metadata: EffectiveContextMetadata;
   persona: EffectiveContextPersona;
+  criticalRules: EffectiveContextBlock[];
   sections: EffectiveContextBlock[];
   skills: EffectiveContextSkill[];
-  version: string;
 };
 
 export type AdapterInput = {

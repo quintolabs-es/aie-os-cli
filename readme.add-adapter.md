@@ -31,6 +31,7 @@ The extension model is:
 - `effectiveContext`
   - canonical machine-readable build result
   - contains:
+    - `metadata.inputs`
     - `persona`
     - `criticalRules`
     - `sections`

@@ -20,9 +20,9 @@ const PROJECT_SKILLS_DIRECTORY = "project-skills";
 
 const PROJECT_CODING_STANDARDS_README = `# Project Coding Standards
 
-Add project-specific coding standard files here, for example:
-- api.md
-- persistence.md
+Add project-specific coding standard files here, e.g., rules.md. 
+You can also optionally add critical-rules.md for rules to be added 
+to the top of the context.
 `;
 
 const PROJECT_SKILLS_README = `# Project Skills
