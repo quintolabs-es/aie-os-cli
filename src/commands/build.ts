@@ -45,7 +45,7 @@ export async function buildProject(options: BuildExecutionOptions): Promise<void
   await agentArtifactWriter.write(options.projectPath, adapterOutput);
 
   const buildCompleteBox = terminalStyle.promptHeaderBox(
-    `Build complete. Generated canonical context file ${aieRelativePaths.effectiveContextFile} and tool-specific file ${adapterOutput.primaryArtifact}.`,
+    `Build complete. Generated canonical context file ${aieRelativePaths.effectiveContextFile} and ${adapterOutput.primaryArtifact}.`,
   );
 
   output.write(

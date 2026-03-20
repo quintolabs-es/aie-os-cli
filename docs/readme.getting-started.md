@@ -7,7 +7,7 @@ See [`docs/readme.create-content.md`](./readme.create-content.md) for the conten
 The repo also includes a ready-to-use [`/content`](../content) folder for getting started.
 ```bash
 cd xample-app
-git clone https://github.com/quintolabs-es/aie-os-cli aie-os
+git clone https://github.com/quintolabs-es/aie-os
 pnpm --dir aie-os run build
 ```
 **Ignore `aie-os` in `.gitignore`.**
@@ -73,6 +73,6 @@ Use this only when shared knowledge base, agent, and skills content (`/content` 
 
 ```bash
 cd xample-app
-npx github:quintolabs-es/aie-os-cli init ...
-npx github:quintolabs-es/aie-os-cli build --tool codex ...
+npx github:quintolabs-es/aie-os init ...
+npx github:quintolabs-es/aie-os build --tool codex ...
 ```
