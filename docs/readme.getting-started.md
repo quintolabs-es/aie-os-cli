@@ -3,11 +3,11 @@
 Use `/content` folder here as the starting point for shared principles, standards, skills, and personas. Add new content or update the existing files and folders as needed. 
 See `docs/readme.create-content.md` for the content structure and authoring rules.
 
-### Add `aie-os-cli` package as dev dependency
-Install the package in the target project.
+### Clone `aie-os-cli` into the target project
 ```bash
 cd xample-app
-pnpm add -D github:quintolabs-es/aie-os-cli
+git clone https://github.com/quintolabs-es/aie-os-cli aie-os
+pnpm --dir aie-os run build
 ```
 
 ### Initialize AIE OS
@@ -16,18 +16,18 @@ pnpm add -D github:quintolabs-es/aie-os-cli
 cd xample-app
 
 # interactive
-pnpm aie-os-cli init [--project-path <defaults-to-cwd>]
+bash aie-os/bin/aie-os init [--project-path <defaults-to-cwd>]
 
 # OR explicit
-pnpm aie-os-cli init 
-                --kb-path <value> \
-                --agent-path <value> \
-                --agent-persona <value> \
-                [--languages <value1,value2>] \
-                [--application-type <value1,value2>] \
-                [--frameworks <value1,value2>] \
-                [--skills-path <value>] \
-                [--project-path <defaults-to-cwd>]
+bash aie-os/bin/aie-os init \
+  --kb-path <value> \
+  --agent-path <value> \
+  --agent-persona <value> \
+  [--languages <value1,value2>] \
+  [--application-type <value1,value2>] \
+  [--frameworks <value1,value2>] \
+  [--skills-path <value>] \
+  [--project-path <defaults-to-cwd>]
 ```
 
 #### `init` command options:
@@ -48,7 +48,7 @@ pnpm aie-os-cli init
 
 E.g.
 ```bash
-pnpm aie-os-cli init \
+bash aie-os/bin/aie-os init \
   --project-path ./xample-app \
   --kb-path ./content/knowledge-base \
   --agent-path ./content/agent \
@@ -60,13 +60,21 @@ pnpm aie-os-cli init \
 
 ### Build agent context.
 ```bash
-pnpm aie-os-cli build --tool codex
-pnpm aie-os-cli build --tool codex [--project-path <defaults-to-cwd>]
+bash aie-os/bin/aie-os build --tool codex
+bash aie-os/bin/aie-os build --tool codex [--project-path <defaults-to-cwd>]
 ```
 * `--tool`: mandatory. Accepts `codex`. More adapters can be added.
 * `--project-path /path/to/project` optional, defaults to current directory.
 
 For running the CLI from this repository during development, see `readme.run-locally.md`.
+
+### Ignore the local clone
+
+Do not commit the local `aie-os/` clone inside the target project. Add it to the target project's `.gitignore`.
+
+```gitignore
+aie-os/
+```
 
 ### Bootstrap agent sessions
 
