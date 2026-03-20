@@ -65,8 +65,6 @@ test("Explicit init succeeds with required args and defaults optional values to 
     fixture.agentPath,
     "--agent-persona",
     "software-developer",
-    "--languages",
-    "typescript",
   ]);
 
   const manifestPath = path.join(fixture.projectPath, ".aie-os", "aie-os.json");
@@ -75,8 +73,34 @@ test("Explicit init succeeds with required args and defaults optional values to 
   assert.equal(manifest.paths.skills, "");
   assert.deepEqual(manifest.selection.applicationTypes, []);
   assert.deepEqual(manifest.selection.frameworks, []);
-  assert.deepEqual(manifest.selection.languages, ["typescript"]);
+  assert.deepEqual(manifest.selection.languages, []);
   assert.equal(manifest.selection.persona, "software-developer");
+});
+
+test("Explicit init rejects invalid provided languages", async () => {
+  const fixture = await createInitFixture();
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [
+      cliEntry,
+      "init",
+      "--project-path",
+      fixture.projectPath,
+      "--kb-path",
+      fixture.knowledgeBasePath,
+      "--agent-path",
+      fixture.agentPath,
+      "--agent-persona",
+      "software-developer",
+      "--languages",
+      "invalid-language",
+    ]),
+    (error) => {
+      assert.equal(error.code, 1);
+      assert.match(error.stderr, /Unsupported languages: invalid-language/u);
+      return true;
+    },
+  );
 });
 
 test("Explicit init rejects invalid optional selections", async () => {

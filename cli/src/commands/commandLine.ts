@@ -37,7 +37,7 @@ Other options:
 Examples:
   aie-os init
   aie-os init --project-path /repo
-  aie-os init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer --languages typescript
+  aie-os init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer
   aie-os init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer --languages typescript --application-type cli
   aie-os build --tool codex
 

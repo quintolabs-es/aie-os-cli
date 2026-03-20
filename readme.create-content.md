@@ -1,35 +1,65 @@
 
 ### Create content
 
-AIE OS builds context from three shared sources plus two project-local sources:
+AIE OS builds context from three shared sources plus two project-local sources.
 
-- knowledge base root (`--kb-path`)
-  - folder structure:
-    - `[kb-path]/engineering-principles/universal/*.md`
-    - `[kb-path]/coding-standards/universal/*.md`
-    - `[kb-path]/coding-standards/language/<name>/*.md`
-    - `[kb-path]/coding-standards/application-type/<name>/*.md`
-    - `[kb-path]/coding-standards/framework/<name>/*.md`
-    - `[kb-path]/coding-standards/conditional/**/*.md`
-  - purpose:
-    - engineering principles and coding standards shared across projects
-  - examples:
-    - `[kb-path]/engineering-principles/universal/engineering-principles.md`
-    - `[kb-path]/coding-standards/universal/coding-standards.md`
+#### Knowledge base root (`--kb-path`)
 
-- agent root (`--agent-path`)
-  - mandatory structure:
-    - `[agent-path]/universal/*.md`
-    - `[agent-path]/persona/*.md`
+Expected structure
 
-- skills root (`--skills-path`)
-  - mandatory structure:
-    - `[skills-path]/<skill-name>/`
+```text
+[kb-path]/
+  engineering-principles/
+    universal/
+      *.md
+  coding-standards/
+    universal/
+      *.md
+    language/
+      <name>/
+        *.md
+    application-type/
+      <name>/
+        *.md
+    framework/
+      <name>/
+        *.md
+    conditional/
+      **/*.md
+```
 
-- project-local sources in the target project
-  - mandatory structure:
-    - `.aie-os/project-coding-standards/*.md`
-    - `.aie-os/project-skills/<skill-name>/`
+#### Agent root (`--agent-path`)
+
+Expected structure
+
+```text
+[agent-path]/
+  universal/
+    *.md
+  persona/
+    *.md
+```
+
+#### Skills root (`--skills-path`)
+
+Expected structure
+
+```text
+[skills-path]/
+  <skill-name>/
+```
+
+#### Project-local sources in the target project
+
+Expected structure
+
+```text
+.aie-os/
+  project-coding-standards/
+    *.md
+  project-skills/
+    <skill-name>/
+```
 
 Rules:
 - `<name>` folder names under `language/`, `application-type/`, and `framework/` are the option names discovered by `init`.

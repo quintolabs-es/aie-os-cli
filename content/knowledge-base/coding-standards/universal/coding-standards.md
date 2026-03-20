@@ -20,6 +20,7 @@
 - Use structured error values or exceptions consistently within a module.
 - README files must explain setup, run, and deployment with direct commands.
 - Tool READMEs must explain usage directly and prefer command examples.
+- Write command-line documentation command-first. Show the command in its final form with concise placeholders like `<value>` or `<value1,value2>`, and avoid explanatory prose before the command.
 - Prefer constructor or parameter injection for infrastructure dependencies.
 - Prefer small adapters around external services.
 - Prefer pure functions for domain logic where feasible.

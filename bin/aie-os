@@ -8,7 +8,7 @@ CLI_ENTRY="$PROJECT_ROOT/cli/dist/index.js"
 
 if [ ! -f "$CLI_ENTRY" ]; then
   echo "AIE OS CLI is not built." >&2
-  echo "Run: cd \"$PROJECT_ROOT/cli\" && npm install && npm run build" >&2
+  echo "Run: cd \"$PROJECT_ROOT/cli\" && pnpm install && pnpm run build" >&2
   exit 1
 fi
 

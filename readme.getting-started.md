@@ -2,7 +2,8 @@
 ```bash
 cd xample-app
 git clone https://github.com/quintolabs-es/aie-os
-npm --prefix aie-os/cli run build
+pnpm --dir aie-os/cli install
+pnpm --dir aie-os/cli run build
 ```
 
 **Add `aie-os` folder to `.gitignore`.**
@@ -11,22 +12,28 @@ npm --prefix aie-os/cli run build
 Check `readme.create-content.md` for instructions on how to add principles, standards, skills, agent universal rules, and agent personas.
 
 ### Initialize AIE-OS
+
 ```bash
 cd xample-app
-bash aie-os/bin/aie-os init
+bash aie-os/bin/aie-os init [--project-path <value>]
+bash aie-os/bin/aie-os init [--project-path <value>] --kb-path <value> --agent-path <value> --agent-persona <value> [--languages <value1,value2>] [--application-type <value1,value2>] [--frameworks <value1,value2>] [--skills-path <value>]
 ```
-
-If all options are provided, `init` runs without prompting.
 
 #### Command `bash aie-os/bin/aie-os init` takes options:
 * `--project-path /path/to/app/project/dir`: optional, defaults to current directory;
-* `--kb-path /path/to/knowledge-base/dir`: optional, prompted if not provided;
-* `--agent-path /path/to/agent/dir`: optional, prompted if not provided;
-* `--skills-path /path/to/skills/dir`: optional, prompted if not provided.
-* `--agent-persona <name>`: optional, prompted if not provided. Available values come from markdown file names under `[agent-path]/persona/`.
-* `--languages <name1,name2>`: optional, prompted if not provided. Available values come from folder names under `[kb-path]/coding-standards/language/`.
-* `--application-type <name1,name2>`: optional, prompted if not provided. Available values come from folder names under `[kb-path]/coding-standards/application-type/`.
-* `--frameworks <name1,name2>`: optional, prompted if not provided. Available values come from folder names under `[kb-path]/coding-standards/framework/`.
+* `--kb-path /path/to/knowledge-base/dir`: required in explicit mode; prompted in interactive mode;
+* `--agent-path /path/to/agent/dir`: required in explicit mode; prompted in interactive mode;
+* `--skills-path /path/to/skills/dir`: optional, empty disables shared skills;
+* `--agent-persona <name>`: required in explicit mode; prompted in interactive mode. Available values come from markdown file names under `[agent-path]/persona/`;
+* `--languages <name1,name2>`: optional. Available values come from folder names under `[kb-path]/coding-standards/language/`;
+* `--application-type <name1,name2>`: optional. Available values come from folder names under `[kb-path]/coding-standards/application-type/`;
+* `--frameworks <name1,name2>`: optional. Available values come from folder names under `[kb-path]/coding-standards/framework/`.
+
+`init` modes:
+- no init config arguments: interactive mode
+- any init config argument (`--kb-path`, `--agent-path`, `--skills-path`, `--agent-persona`, `--languages`, `--application-type`, `--frameworks`): explicit mode
+- `--project-path` alone does not switch `init` to explicit mode
+- in explicit mode, omitted optional values become empty/unset and `init` does not prompt
 
 E.g.
 ```bash
@@ -36,7 +43,6 @@ bash ./bin/aie-os init \
   --agent-path ./content/agent \
   --skills-path ./content/skills \
   --agent-persona software-developer \
-  --languages csharp,typescript \
   --application-type api,mobile \
   --frameworks react-native
 ```

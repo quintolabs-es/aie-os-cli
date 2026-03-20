@@ -167,17 +167,17 @@ async function collectSelections(
       : missingRequiredInitOption("--agent-persona", input.mode));
 
   const languages =
-    validateMultiSelection(initial.languages, languageOptions, "languages", false) ??
+    validateMultiSelection(initial.languages, languageOptions, "languages", true) ??
     (interactive
       ? await promptMultiSelect({
-          allowEmpty: false,
+          allowEmpty: true,
           command: "init",
           defaultValue: languageOptions.length === 1 ? [languageOptions[0]] : [],
           explanation: "Select one or more languages. This supports monorepos.",
           label: "Select languages",
           options: languageOptions,
         })
-      : missingRequiredInitOption("--languages", input.mode));
+      : []);
 
   const applicationTypes =
     validateMultiSelection(initial.applicationTypes, applicationTypeOptions, "application types", true) ??
