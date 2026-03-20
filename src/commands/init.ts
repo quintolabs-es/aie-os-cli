@@ -21,6 +21,7 @@ import {
   promptSingleSelect,
   promptTextInput,
 } from "./terminalPrompts";
+import { commandName } from "./commandName";
 import type { InitExecutionOptions, InitPromptDefaults, InitSelections } from "./types";
 
 export async function initProject(options: InitExecutionOptions): Promise<void> {
@@ -375,7 +376,9 @@ function missingRequiredInitOption(
     );
   }
 
-  throw new Error(`Missing required option ${optionName}. Run "aie-os init" in a terminal.`);
+  throw new Error(
+    `Missing required option ${optionName}. Run "${commandName} init" in a terminal.`,
+  );
 }
 
 function capitalizeLabel(label: string): string {

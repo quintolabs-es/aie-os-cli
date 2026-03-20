@@ -13,7 +13,7 @@ test("CLI help command prints usage text", async () => {
   assert.equal(stderr, "");
   assert.match(stdout, /^AIE OS\r?\n/u);
   assert.match(stdout, /Usage:\r?\n/u);
-  assert.match(stdout, /aie-os build --tool codex/u);
+  assert.match(stdout, /aie-os-cli build --tool codex/u);
 });
 
 test("CLI without a command shows a command-required error and help", async () => {

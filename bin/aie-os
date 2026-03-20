@@ -12,4 +12,4 @@ if [ ! -f "$CLI_ENTRY" ]; then
   exit 1
 fi
 
-node "$CLI_ENTRY" "$@"
+AIE_OS_COMMAND_NAME="aie-os" node "$CLI_ENTRY" "$@"

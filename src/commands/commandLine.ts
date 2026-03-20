@@ -1,6 +1,7 @@
 import fsSync from "node:fs";
 import path from "node:path";
 import { aieStructure } from "../context/aieStructure";
+import { commandName } from "./commandName";
 import type { ExecutionOptions, InitExecutionOptions, ParsedOptions, ToolName } from "./types";
 
 const TOOL_NAME: ToolName = "codex";
@@ -8,8 +9,8 @@ const TOOL_NAME: ToolName = "codex";
 export const usageText = `AIE OS
 
 Usage:
-  aie-os init [options]
-  aie-os build --tool codex [options]
+  ${commandName} init [options]
+  ${commandName} build --tool codex [options]
 
 Commands:
   init
@@ -35,11 +36,11 @@ Other options:
   -h, --help                        Show help.
 
 Examples:
-  aie-os init
-  aie-os init --project-path /repo
-  aie-os init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer
-  aie-os init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer --languages typescript --application-type cli
-  aie-os build --tool codex
+  ${commandName} init
+  ${commandName} init --project-path /repo
+  ${commandName} init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer
+  ${commandName} init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer --languages typescript --application-type cli
+  ${commandName} build --tool codex
 
 Notes:
   - init prompts only when no init configuration arguments are provided.
