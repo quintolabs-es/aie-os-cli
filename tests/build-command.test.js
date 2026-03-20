@@ -39,7 +39,15 @@ test("Build prints the codex bootstrap prompt after a successful build", async (
   assert.equal(stderr, "");
   assert.match(
     normalizedStdout,
-    /Build complete\. Generated \.aie-os\/build\/effective-context\.json and AGENTS\.md\./u,
+    /┌─+┐/u,
+  );
+  assert.match(
+    normalizedStdout,
+    /│ Build complete\. Generated \.aie-os\/build\/effective-context\.json and AGENTS\.md\. │/u,
+  );
+  assert.match(
+    normalizedStdout,
+    /└─+┘/u,
   );
   assert.match(normalizedStdout, /Bootstrap prompt/u);
   assert.match(

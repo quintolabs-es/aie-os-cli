@@ -6,6 +6,7 @@ import { aieRelativePaths } from "../context/aieStructure";
 import { buildAgentContext } from "../context/build";
 import { fileExists, writeText } from "../context/filesystem";
 import { loadManifest } from "../context/manifest";
+import { terminalStyle } from "./terminalStyle";
 import type { BuildExecutionOptions } from "./types";
 
 const ansi = {
@@ -43,15 +44,19 @@ export async function buildProject(options: BuildExecutionOptions): Promise<void
   );
   await agentArtifactWriter.write(options.projectPath, adapterOutput);
 
+  const buildCompleteBox = terminalStyle.promptHeaderBox(
+    `Build complete. Generated canonical context file ${aieRelativePaths.effectiveContextFile} and tool-specific file ${adapterOutput.primaryArtifact}.`,
+  );
+
   output.write(
     [
       "",
-      `Build complete. Generated ${aieRelativePaths.effectiveContextFile} and ${adapterOutput.primaryArtifact}.`,
+      ...buildCompleteBox,
       "",
       `${ansi.bold}${ansi.cyan}Bootstrap prompt${ansi.reset}`,
       "Use this first prompt in the next agent session to make sure the agent reloads and follows the instructions from the context you just built.",
       "",
-      `${ansi.dim}${ansi.green}${adapterOutput.bootstrapPrompt}${ansi.reset}`,
+      `${ansi.yellow}${adapterOutput.bootstrapPrompt}${ansi.reset}`,
       "",
     ].join("\n"),
   );
