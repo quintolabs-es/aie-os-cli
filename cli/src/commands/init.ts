@@ -73,7 +73,7 @@ async function collectManifest(
     : interactive
       ? await promptOptionalPath({
           defaultValue: defaults.skillsPath,
-          description: "AIE OS reads shared skills from this folder. Type none to disable shared skills.",
+          description: "AIE OS reads shared skills from this folder. Leave it empty to disable shared skills.",
           promptLabel: "skills path",
           optionName: "--skills-path",
           projectPath,
@@ -312,15 +312,12 @@ async function promptOptionalPath(inputOptions: {
       errorMessage,
       optionName: inputOptions.optionName,
       promptLabel: inputOptions.promptLabel,
-      submitHint: "Press Enter to accept the default, type a new value, type none to disable, or press Esc to cancel.",
+      submitHint: "Enter to accept, delete to empty and disable, type to replace, or press Esc to cancel.",
     });
 
-    const normalizedValue = rawValue.trim().toLowerCase() === "none"
+    const normalizedValue = rawValue.trim() === ""
       ? ""
-      : normalizeConfiguredPath(
-          inputOptions.projectPath,
-          rawValue.trim() === "" ? inputOptions.defaultValue : rawValue.trim(),
-        );
+      : normalizeConfiguredPath(inputOptions.projectPath, rawValue.trim());
 
     if (normalizedValue === "") {
       return "";
@@ -380,14 +377,6 @@ function validateMultiSelection(
     return undefined;
   }
 
-  if (selectedValues.length === 1 && selectedValues[0] === "none") {
-    if (allowNone) {
-      return [];
-    }
-
-    throw new Error(`Unsupported ${label}: none`);
-  }
-
   const invalidSelections = selectedValues.filter((value) => !options.includes(value));
   if (invalidSelections.length > 0) {
     throw new Error(`Unsupported ${label}: ${invalidSelections.join(", ")}`);
@@ -409,7 +398,7 @@ function normalizeConfiguredPath(projectPath: string, configuredPath: string): s
 }
 
 function normalizeOptionalProvidedPath(projectPath: string, configuredPath: string): string {
-  if (configuredPath.trim().toLowerCase() === "none") {
+  if (configuredPath.trim() === "") {
     return "";
   }
 

@@ -312,8 +312,8 @@ function normalizeCliPathOption(
     return undefined;
   }
 
-  if (configuredPath.trim().toLowerCase() === "none") {
-    return "none";
+  if (configuredPath.trim() === "") {
+    return "";
   }
 
   const absolutePath = path.isAbsolute(configuredPath)
