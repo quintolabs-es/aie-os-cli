@@ -4,11 +4,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
-CLI_ENTRY="$PROJECT_ROOT/cli/dist/index.js"
+CLI_ENTRY="$PROJECT_ROOT/dist/index.js"
 
 if [ ! -f "$CLI_ENTRY" ]; then
   echo "AIE OS CLI is not built." >&2
-  echo "Run: cd \"$PROJECT_ROOT/cli\" && pnpm install && pnpm run build" >&2
+  echo "Run: cd \"$PROJECT_ROOT\" && pnpm run build" >&2
   exit 1
 fi
 

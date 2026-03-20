@@ -18,13 +18,13 @@ An adapter must not:
 The extension model is:
 
 1. one adapter file under:
-   - `cli/src/agentAdapters/<tool>Adapter.ts`
+   - `src/agentAdapters/<tool>Adapter.ts`
 2. one static registry entry in:
-   - `cli/src/agentAdapters/index.ts`
+   - `src/agentAdapters/index.ts`
 3. one supported tool type update in:
-   - `cli/src/agentAdapters/types.ts`
+   - `src/agentAdapters/types.ts`
 4. CLI support in:
-   - `cli/src/commands/commandLine.ts`
+   - `src/commands/commandLine.ts`
 
 ### Adapter input
 

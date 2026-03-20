@@ -14,10 +14,10 @@ Skills are copied to project folder (.aie-os) and referenced in the aggregated c
 ## Create content
 The content structure is intentionally simple: add clear, direct, reusable files under the appropriate folders so `init` can discover options from folder names and `build` can resolve them deterministically.
 
-Check `readme.create-content.md` for instructions to create content.
+Check `docs/readme.create-content.md` for instructions to create content.
 
 ## Getting started
-Check `readme.getting-started.md` for instructions on usage.
+Check `docs/readme.getting-started.md` for instructions on usage.
 
 ## Target project structure
 Below the general agent-agnostic structure. Agent specific artefacts are added by the build execution after the effective-context file.

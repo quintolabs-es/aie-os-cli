@@ -2,14 +2,13 @@
 ```bash
 cd xample-app
 git clone https://github.com/quintolabs-es/aie-os
-pnpm --dir aie-os/cli install
-pnpm --dir aie-os/cli run build
+pnpm --dir aie-os run build
 ```
 
 **Add `aie-os` folder to `.gitignore`.**
 
 ### Create content
-Use `/content` as the starting point for shared principles, standards, skills, and personas. Add new content or update the existing files and folders as needed. See `readme.create-content.md` for the content structure and authoring rules.
+Use `/content` as the starting point for shared principles, standards, skills, and personas. Add new content or update the existing files and folders as needed. See `docs/readme.create-content.md` for the content structure and authoring rules.
 
 ### Initialize AIE-OS
 
@@ -37,7 +36,7 @@ bash aie-os/bin/aie-os init [--project-path <value>] --kb-path <value> --agent-p
 
 E.g.
 ```bash
-bash ./bin/aie-os init \
+bash aie-os/bin/aie-os init \
   --project-path ./xample-app \
   --kb-path ./content/knowledge-base \
   --agent-path ./content/agent \

@@ -202,74 +202,33 @@ function hasExplicitInitConfig(options: Record<string, string>): boolean {
 }
 
 function detectInitDefaults(projectPath: string) {
-  const localAieOsPath = path.join(projectPath, aieStructure.localTool.directoryName);
-  const bundledRoot = path.resolve(__dirname, "..", "..", "..");
+  const projectLocalContentPath = path.join(
+    projectPath,
+    aieStructure.localTool.directoryName,
+    aieStructure.sharedContent.rootDirectoryName,
+  );
+  const skillsPath = path.join(
+    projectLocalContentPath,
+    aieStructure.sharedContent.skillsDirectoryName,
+  );
 
   return {
-    kbPath: detectSharedDefault(
+    kbPath: toProjectRelative(
       projectPath,
       path.join(
-        localAieOsPath,
-        aieStructure.sharedContent.rootDirectoryName,
-        aieStructure.sharedContent.knowledgeBaseDirectoryName,
-      ),
-      path.join(
-        bundledRoot,
-        aieStructure.sharedContent.rootDirectoryName,
+        projectLocalContentPath,
         aieStructure.sharedContent.knowledgeBaseDirectoryName,
       ),
     ),
-    agentPath: detectSharedDefault(
+    agentPath: toProjectRelative(
       projectPath,
       path.join(
-        localAieOsPath,
-        aieStructure.sharedContent.rootDirectoryName,
-        aieStructure.sharedContent.agentDirectoryName,
-      ),
-      path.join(
-        bundledRoot,
-        aieStructure.sharedContent.rootDirectoryName,
+        projectLocalContentPath,
         aieStructure.sharedContent.agentDirectoryName,
       ),
     ),
-    skillsPath: detectOptionalSharedDefault(
-      projectPath,
-      path.join(
-        localAieOsPath,
-        aieStructure.sharedContent.rootDirectoryName,
-        aieStructure.sharedContent.skillsDirectoryName,
-      ),
-      path.join(
-        bundledRoot,
-        aieStructure.sharedContent.rootDirectoryName,
-        aieStructure.sharedContent.skillsDirectoryName,
-      ),
-    ),
+    skillsPath: pathExists(skillsPath) ? toProjectRelative(projectPath, skillsPath) : "",
   };
-}
-
-function detectSharedDefault(projectPath: string, preferredPath: string, fallbackPath: string): string {
-  if (pathExists(preferredPath)) {
-    return toProjectRelative(projectPath, preferredPath);
-  }
-
-  return toProjectRelative(projectPath, fallbackPath);
-}
-
-function detectOptionalSharedDefault(
-  projectPath: string,
-  preferredPath: string,
-  fallbackPath: string,
-): string {
-  if (pathExists(preferredPath)) {
-    return toProjectRelative(projectPath, preferredPath);
-  }
-
-  if (pathExists(fallbackPath)) {
-    return toProjectRelative(projectPath, fallbackPath);
-  }
-
-  return "";
 }
 
 function resolveProjectPath(cwd: string, explicitPath?: string): string {

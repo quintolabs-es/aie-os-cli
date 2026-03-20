@@ -63,14 +63,14 @@ Given the user-provided tool name:
     - `cursorAdapter`
 
 - `adapterFile`
-  - `cli/src/agentAdapters/${adapterBaseName}Adapter.ts`
+  - `src/agentAdapters/${adapterBaseName}Adapter.ts`
 
 ## Workflow
 
 1. Stop if `toolKey` already exists in:
-   - `cli/src/agentAdapters/types.ts`
-   - `cli/src/agentAdapters/index.ts`
-   - `cli/src/commands/commandLine.ts`
+   - `src/agentAdapters/types.ts`
+   - `src/agentAdapters/index.ts`
+   - `src/commands/commandLine.ts`
 
 2. Create `adapterFile` with this exact scaffold, replacing the placeholders:
 
@@ -89,14 +89,14 @@ export const <adapterSymbol>: Adapter = {
       ],
       primaryArtifact: "TODO-<toolKey>-artifact.txt",
       warnings: [
-        "Implement tool-specific artifact rendering in cli/src/agentAdapters/<adapterBaseName>Adapter.ts.",
+        "Implement tool-specific artifact rendering in src/agentAdapters/<adapterBaseName>Adapter.ts.",
       ],
     };
   },
 };
 ```
 
-3. Update `cli/src/agentAdapters/types.ts`.
+3. Update `src/agentAdapters/types.ts`.
 
 Change:
 
@@ -112,7 +112,7 @@ export type AdapterTool = "codex" | "<toolKey>";
 
 If more tools already exist, append `| "<toolKey>"` to the union instead of rewriting unrelated values.
 
-4. Update `cli/src/agentAdapters/index.ts`.
+4. Update `src/agentAdapters/index.ts`.
 
 Add the import:
 
@@ -128,7 +128,7 @@ Add the registry entry:
 
 Keep the existing static registry object. Do not replace it with dynamic loading.
 
-5. Update `cli/src/commands/commandLine.ts`.
+5. Update `src/commands/commandLine.ts`.
 
 Make these deterministic changes:
 
@@ -202,8 +202,8 @@ After the scaffold is created, report:
 - the files added or updated
 - the generated adapter file path
 - these exact next steps for the contributor:
-  1. implement the tool-specific rendering logic in `cli/src/agentAdapters/<adapterBaseName>Adapter.ts`
+  1. implement the tool-specific rendering logic in `src/agentAdapters/<adapterBaseName>Adapter.ts`
   2. replace the placeholder output path and contents in that adapter file
-  3. run `npm --prefix cli run build`
+  3. run `pnpm run build`
   4. run `bash bin/aie-os build --tool <toolKey> --project-path <path-to-test-project>`
   5. inspect the generated artifact written by the new adapter
