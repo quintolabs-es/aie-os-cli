@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture Definition"
+  short_description: "Define pragmatic target solution architectures"
+  default_prompt: "Use $sdd-architecture-definition-skill to define the target solution architecture for an approved Feature Pack."

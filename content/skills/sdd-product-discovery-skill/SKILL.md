@@ -1,5 +1,5 @@
 ---
-name: product-discovery-skill
+name: sdd-product-discovery-skill
 description: Discover, clarify, structure, and document the current state of an existing, prototyped, or emerging product as a Product Snapshot. Use when reviewing product evidence, conducting iterative product discovery, identifying product-knowledge gaps, or creating and refining PRODUCT_OVERVIEW.md, PRODUCT_DETAILS.md, and capability-specific Product Snapshot files.
 ---
 

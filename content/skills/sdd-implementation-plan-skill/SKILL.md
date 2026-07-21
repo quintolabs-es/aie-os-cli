@@ -1,5 +1,5 @@
 ---
-name: implementation-plan-skill
+name: sdd-implementation-plan-skill
 description: Create an agreed, execution-ready Implementation Plan for an approved Feature Pack using governing product, architecture, engineering, and repository evidence. Use when analyzing a solution, resolving implementation decisions with a developer, decomposing work into verifiable tasks, or producing IMPLEMENTATION_PLAN.md.
 ---
 

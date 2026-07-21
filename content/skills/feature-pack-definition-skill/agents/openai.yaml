@@ -1,4 +1,0 @@
-interface:
-  display_name: "Feature Pack Definition"
-  short_description: "Define implementation-ready product increments"
-  default_prompt: "Use $feature-pack-definition-skill to define a clear and independently deliverable product increment."

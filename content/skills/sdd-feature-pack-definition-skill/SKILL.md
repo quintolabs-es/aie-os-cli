@@ -1,5 +1,5 @@
 ---
-name: feature-pack-definition-skill
+name: sdd-feature-pack-definition-skill
 description: Define a clear, accurate, and implementation-ready Feature Pack for the smallest independently deliverable product increment. Use when discovering, scoping, refining, validating, or documenting requested product behavior in FEATURE_PACK.md without introducing architecture or implementation decisions.
 ---
 

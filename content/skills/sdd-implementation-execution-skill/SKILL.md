@@ -1,5 +1,5 @@
 ---
-name: implementation-execution-skill
+name: sdd-implementation-execution-skill
 description: Execute and validate an approved Implementation Plan end-to-end without redesigning the solution or inventing decisions. Use when implementing plan tasks, running required validation, handling execution blockers under governing artifacts, and reporting evidence for a completed Product Increment.
 ---
 
