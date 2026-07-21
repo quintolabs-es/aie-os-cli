@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Discovery"
+  short_description: "Create evidence-based product snapshots"
+  default_prompt: "Use $product-discovery-skill to discover and document the current state of a product."
