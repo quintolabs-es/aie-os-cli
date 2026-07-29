@@ -4,14 +4,15 @@
 
 ```bash
 cd aie-os
-pnpm run build
-bash bin/cli init \
-  --kb-path content/knowledge-base \
-  --agent-path content/agent \
+docker compose -f docker-compose.yaml build
+docker compose -f docker-compose.yaml run --rm aie-os init \
+  --project-path aie-os \
+  --kb-path aie-os/content/knowledge-base \
+  --agent-path aie-os/content/agent \
   --agent-persona software-developer \
-  --skills-path content/skills \
+  --skills-path aie-os/content/skills \
   --languages typescript \
   --application-type cli 
 
-bash bin/cli build
+docker compose -f docker-compose.yaml run --rm aie-os build --project-path aie-os
 ```

@@ -11,10 +11,11 @@ git clone https://github.com/quintolabs-es/aie-os
 ```
 Then build
 ```bash
-pnpm --dir aie-os run build
+docker compose -f aie-os/docker-compose.yaml build
 
 # OR catch up with latest
-bash aie-os/bin/build-latest-aie-os 
+git -C aie-os pull origin main
+docker compose -f aie-os/docker-compose.yaml build
 ```
 
 **Make sure to gnore `aie-os` in `.gitignore`.**
@@ -26,10 +27,10 @@ The commands below assume the local clone workflow.
 cd xample-app
 
 # interactive
-bash aie-os/bin/cli init 
+docker compose -f aie-os/docker-compose.yaml run --rm aie-os init
 
 # OR explicit
-bash aie-os/bin/cli init \
+docker compose -f aie-os/docker-compose.yaml run --rm aie-os init \
   --kb-path <value> \
   --agent-path <value> \
   --agent-persona <value> \
@@ -58,16 +59,7 @@ bash aie-os/bin/cli init \
 ### Build agent context.
 Build context and generate the adapter artifacts. `build` uses the `default` adapter when `--tool` is omitted.
 ```bash
-bash aie-os/bin/cli build [--project-path <value>] [--tool default]
+docker compose -f aie-os/docker-compose.yaml run --rm aie-os build [--project-path <value>] [--tool default]
 ```
 * `--tool`: optional. Defaults to `default`.
 * `--project-path /path/to/project` optional, defaults to current directory.
-
-### Alternative to clone and build: run with `npx`
-Use this only when shared knowledge base, agent, and skills content (`/content` folder) already exist somewhere locally, and you don't need to have/clone the CLI code locally.
-
-```bash
-cd xample-app
-npx github:quintolabs-es/aie-os init ...
-npx github:quintolabs-es/aie-os build ...
-```
