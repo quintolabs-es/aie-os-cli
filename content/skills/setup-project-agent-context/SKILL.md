@@ -1,11 +1,11 @@
 ---
-name: generate-project-agents-md
-description: Use this skill when the user wants to create, generate, or configure an AGENTS.md file for a project with AIE OS. It gathers missing configuration, runs the AIE OS CLI, and verifies the generated artifacts.
+name: setup-project-agent-context
+description: Use this skill when the user wants to set up AIE OS, configure agent context, or generate agent instruction files such as AGENTS.md for a project. It gathers missing configuration, runs the AIE OS CLI, and verifies the generated artifacts.
 ---
 
-# Generate Project AGENTS.md
+# Set Up Project Agent Context
 
-Use this skill as a conversational orchestration layer on top of AIE OS when the user wants an `AGENTS.md` file for a project.
+Use this skill as a conversational orchestration layer on top of AIE OS when the user wants to configure or generate agent context for a project.
 
 ## Outcome
 

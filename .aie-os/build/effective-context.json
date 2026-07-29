@@ -84,14 +84,6 @@
       "warnings": []
     },
     {
-      "description": "Use this skill when the user wants to create, generate, or configure an AGENTS.md file for a project with AIE OS. It gathers missing configuration, runs the AIE OS CLI, and verifies the generated artifacts.",
-      "entrypoint": "SKILL.md",
-      "name": "generate-project-agents-md",
-      "scope": "shared",
-      "source": "C:\\Users\\Luis.Mesa_Grave_de_P\\OneDrive - SITA\\Documents\\src\\bkr\\aie-os\\content\\skills\\generate-project-agents-md",
-      "warnings": []
-    },
-    {
       "description": "Define or evolve a lightweight, pragmatic, implementation-ready target Solution Architecture for an approved Feature Pack. Use when selecting the technical stack, defining DDD-oriented bounded contexts and components, assigning component responsibility and data ownership, describing component interactions, identifying third-party dependencies, or creating and refining SOLUTION_ARCHITECTURE.md before implementation planning.",
       "entrypoint": "SKILL.md",
       "name": "sdd-architecture-definition-skill",
@@ -129,6 +121,14 @@
       "name": "sdd-product-discovery-skill",
       "scope": "shared",
       "source": "C:\\Users\\Luis.Mesa_Grave_de_P\\OneDrive - SITA\\Documents\\src\\bkr\\aie-os\\content\\skills\\sdd-product-discovery-skill",
+      "warnings": []
+    },
+    {
+      "description": "Use this skill when the user wants to set up AIE OS, configure agent context, or generate agent instruction files such as AGENTS.md for a project. It gathers missing configuration, runs the AIE OS CLI, and verifies the generated artifacts.",
+      "entrypoint": "SKILL.md",
+      "name": "setup-project-agent-context",
+      "scope": "shared",
+      "source": "C:\\Users\\Luis.Mesa_Grave_de_P\\OneDrive - SITA\\Documents\\src\\bkr\\aie-os\\content\\skills\\setup-project-agent-context",
       "warnings": []
     },
     {
