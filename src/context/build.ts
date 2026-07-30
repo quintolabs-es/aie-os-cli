@@ -145,12 +145,12 @@ async function resolveContext(input: BuildInput): Promise<{
     for (const applicationType of input.manifest.selection.applicationTypes) {
       pushLoadedBlocks(
         { criticalRules, sections },
-        await loadDirectoryBlocks(
+        await loadFileBlock(
           path.join(
             knowledgeBasePath,
             aieStructure.knowledgeBase.codingRulesDirectoryName,
             aieStructure.knowledgeBase.applicationTypeDirectoryName,
-            applicationType,
+            `${applicationType}${aieStructure.files.markdownExtension}`,
           ),
           projectPath,
           "Application-Type Rules",
@@ -162,12 +162,12 @@ async function resolveContext(input: BuildInput): Promise<{
     for (const framework of input.manifest.selection.frameworks) {
       pushLoadedBlocks(
         { criticalRules, sections },
-        await loadDirectoryBlocks(
+        await loadFileBlock(
           path.join(
             knowledgeBasePath,
             aieStructure.knowledgeBase.codingRulesDirectoryName,
             aieStructure.knowledgeBase.frameworkDirectoryName,
-            framework,
+            `${framework}${aieStructure.files.markdownExtension}`,
           ),
           projectPath,
           "Framework Rules",
@@ -250,6 +250,20 @@ async function loadDirectoryBlocks(
   return loadBlocksFromFiles(files, {
     baseDirectory: directoryPath,
     baseSectionLabel,
+    layer,
+    projectPath,
+  });
+}
+
+async function loadFileBlock(
+  filePath: string,
+  projectPath: string,
+  layer: string,
+  sectionLabel: string,
+): Promise<LoadedBlocks> {
+  return loadBlocksFromFiles([filePath], {
+    baseDirectory: path.dirname(filePath),
+    baseSectionLabel: sectionLabel,
     layer,
     projectPath,
   });

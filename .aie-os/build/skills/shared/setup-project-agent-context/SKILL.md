@@ -5,7 +5,7 @@ description: Use this skill when the user wants to set up AIE OS, configure agen
 
 # Set Up Project Agent Context
 
-Use this skill as a conversational orchestration layer on top of AIE OS when the user wants to configure or generate agent context for a project.
+Use this skill when the user wants to configure or generate agent context for a project.
 
 ## Outcome
 
@@ -21,14 +21,15 @@ Use this skill as a conversational orchestration layer on top of AIE OS when the
 
 ## Workflow
 
-1. Resolve the target project path and confirm the local AIE OS clone contains `docker-compose.yaml`.
-2. Inspect the target project and available AIE OS content before asking questions. Do not ask for values that existing configuration or repository evidence already provides.
-3. If `.aie-os/aie-os.json` does not exist, discover valid personas, languages, application types, and frameworks from the configured AIE OS content paths. Ask the user only for unresolved required choices.
-4. Run AIE OS initialization with `docker compose -f aie-os/docker-compose.yaml run --rm aie-os init`. When choices have already been gathered, append `--kb-path`, `--agent-path`, `--agent-persona`, and any selected `--skills-path`, `--languages`, `--application-type`, or `--frameworks` options.
-5. If `.aie-os/aie-os.json` already exists, preserve it and skip initialization unless the user explicitly requests reconfiguration.
-6. Run `docker compose -f aie-os/docker-compose.yaml run --rm aie-os build --tool default`.
-7. Verify that `.aie-os/aie-os.json`, `.aie-os/build/effective-context.json`, and `AGENTS.md` exist under the target project and that `AGENTS.md` is non-empty.
-8. Report the generated artifact paths and any CLI error that prevents completion.
+1. Inspect the target project and available AIE OS content. Resolve values already present in repository evidence.
+2. Start by asking only for missing required information. Keep each question short and direct.
+3. For selectable values, show only the valid alternatives. Add a concise recommendation when useful.
+4. Confirm the local AIE OS clone contains `docker-compose.yaml`.
+5. If `.aie-os/aie-os.json` does not exist, run `docker compose -f aie-os/docker-compose.yaml run --rm aie-os init`. Append the gathered `--kb-path`, `--agent-path`, `--agent-persona`, and any selected `--skills-path`, `--languages`, `--application-type`, or `--frameworks` options.
+6. If `.aie-os/aie-os.json` exists, preserve it and skip initialization unless the user explicitly requests reconfiguration.
+7. Run `docker compose -f aie-os/docker-compose.yaml run --rm aie-os build --tool default`.
+8. Verify `.aie-os/aie-os.json`, `.aie-os/build/effective-context.json`, and a non-empty `AGENTS.md`.
+9. Report the generated artifact paths or the CLI error that prevented completion.
 
 ## Rules
 
@@ -38,3 +39,4 @@ Use this skill as a conversational orchestration layer on top of AIE OS when the
 - Do not overwrite an existing AIE OS configuration without explicit user approval.
 - Use only values supported by the available AIE OS content.
 - Stop on CLI failure and report the failing command and error instead of applying a manual workaround.
+- Keep questions, alternatives, recommendations, and status messages concise.

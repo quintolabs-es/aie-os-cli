@@ -20,10 +20,10 @@ async function createInitFixture() {
   await fs.mkdir(path.join(knowledgeBasePath, "coding-rules", "language", "typescript"), {
     recursive: true,
   });
-  await fs.mkdir(path.join(knowledgeBasePath, "coding-rules", "application-type", "cli"), {
+  await fs.mkdir(path.join(knowledgeBasePath, "coding-rules", "application-type"), {
     recursive: true,
   });
-  await fs.mkdir(path.join(knowledgeBasePath, "coding-rules", "framework", "react"), {
+  await fs.mkdir(path.join(knowledgeBasePath, "coding-rules", "framework"), {
     recursive: true,
   });
   await fs.mkdir(path.join(knowledgeBasePath, "coding-rules", "conditional"), {
@@ -34,6 +34,14 @@ async function createInitFixture() {
   await fs.writeFile(
     path.join(agentPath, "persona", "software-developer.md"),
     "You are a software developer.\n",
+  );
+  await fs.writeFile(
+    path.join(knowledgeBasePath, "coding-rules", "application-type", "cli.md"),
+    "- Keep CLI commands composable.\n",
+  );
+  await fs.writeFile(
+    path.join(knowledgeBasePath, "coding-rules", "framework", "react.md"),
+    "- Keep React components focused.\n",
   );
   await fs.writeFile(
     path.join(knowledgeBasePath, "coding-rules", "conditional", "cli-typescript.md"),

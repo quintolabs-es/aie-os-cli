@@ -41,7 +41,7 @@ test("Build uses the default adapter and prints the bootstrap prompt after a suc
   );
   assert.match(
     normalizedStdout,
-    /│ Build complete\. Generated canonical context file \.aie-os\/build\/effective-context\.json and AGENTS\.md\. │/u,
+    /│ Build complete\. Generated canonical context file \.aie-os[\\/]build[\\/]effective-context\.json and AGENTS\.md\. │/u,
   );
   assert.match(
     normalizedStdout,
@@ -112,6 +112,54 @@ test("Build keeps Conditional Rules in effective context but merges them into Co
   assert.doesNotMatch(agentsContents, /^## Conditional Rules$/mu);
   assert.match(agentsContents, /^## Coding Rules$/mu);
   assert.match(agentsContents, /Conditional CLI TypeScript rule\./u);
+});
+
+test("Build loads selected application-type and framework Markdown files", async () => {
+  const fixture = await createInitFixture();
+
+  await execFileAsync(process.execPath, [
+    cliEntry,
+    "init",
+    "--project-path",
+    fixture.projectPath,
+    "--kb-path",
+    fixture.knowledgeBasePath,
+    "--agent-path",
+    fixture.agentPath,
+    "--agent-persona",
+    "software-developer",
+    "--application-type",
+    "cli",
+    "--frameworks",
+    "react",
+  ]);
+
+  await execFileAsync(process.execPath, [
+    cliEntry,
+    "build",
+    "--project-path",
+    fixture.projectPath,
+  ]);
+
+  const effectiveContext = JSON.parse(
+    await fs.readFile(
+      path.join(fixture.projectPath, ".aie-os", "build", "effective-context.json"),
+      "utf8",
+    ),
+  );
+
+  assert.equal(
+    effectiveContext.sections.some((section) =>
+      section.sectionLabel === "Application Type: cli" &&
+      section.content.includes("Keep CLI commands composable.")),
+    true,
+  );
+  assert.equal(
+    effectiveContext.sections.some((section) =>
+      section.sectionLabel === "Framework: react" &&
+      section.content.includes("Keep React components focused.")),
+    true,
+  );
 });
 
 test("Build succeeds when the knowledge-base layer is disabled", async () => {

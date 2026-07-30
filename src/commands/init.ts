@@ -145,7 +145,7 @@ async function collectSelections(
       )
     : [];
   const applicationTypeOptions = resolvedKnowledgeBasePath
-    ? await listDirectoryNames(
+    ? await listMarkdownBasenames(
         path.join(
           resolvedKnowledgeBasePath,
           aieStructure.knowledgeBase.codingRulesDirectoryName,
@@ -154,7 +154,7 @@ async function collectSelections(
       )
     : [];
   const frameworkOptions = resolvedKnowledgeBasePath
-    ? await listDirectoryNames(
+    ? await listMarkdownBasenames(
         path.join(
           resolvedKnowledgeBasePath,
           aieStructure.knowledgeBase.codingRulesDirectoryName,
