@@ -1,5 +1,5 @@
 ---
-name: drawio-diagrams
+name: create-drawio-diagrams
 description: Use this skill when the user wants to create or edit draw.io diagrams. It helps author valid `.drawio` XML with explicit shapes, containers, connectors, routing, labels, and layout.
 ---
 
