@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implementation Execution"
+  short_description: "Execute and validate approved plans"
+  default_prompt: "Use $sdd-implementation-execution-skill to execute and validate an approved implementation plan."
