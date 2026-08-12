@@ -155,3 +155,90 @@ test("Explicit init rejects invalid optional selections", async () => {
     },
   );
 });
+
+test("Explicit init accepts application types and frameworks from direct Markdown files", async () => {
+  const fixture = await createInitFixture();
+
+  await execFileAsync(process.execPath, [
+    cliEntry,
+    "init",
+    "--project-path",
+    fixture.projectPath,
+    "--kb-path",
+    fixture.knowledgeBasePath,
+    "--agent-path",
+    fixture.agentPath,
+    "--agent-persona",
+    "software-developer",
+    "--application-type",
+    "cli",
+    "--frameworks",
+    "react",
+  ]);
+
+  const manifest = JSON.parse(
+    await fs.readFile(path.join(fixture.projectPath, ".aie-os", "aie-os.json"), "utf8"),
+  );
+
+  assert.deepEqual(manifest.selection.applicationTypes, ["cli"]);
+  assert.deepEqual(manifest.selection.frameworks, ["react"]);
+});
+
+test("Explicit init does not discover nested application-type or framework folders", async () => {
+  const fixture = await createInitFixture();
+
+  await fs.mkdir(
+    path.join(fixture.knowledgeBasePath, "coding-rules", "application-type", "nested-api"),
+  );
+  await fs.mkdir(
+    path.join(fixture.knowledgeBasePath, "coding-rules", "framework", "nested-framework"),
+  );
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [
+      cliEntry,
+      "init",
+      "--project-path",
+      fixture.projectPath,
+      "--kb-path",
+      fixture.knowledgeBasePath,
+      "--agent-path",
+      fixture.agentPath,
+      "--agent-persona",
+      "software-developer",
+      "--application-type",
+      "nested-api",
+      "--frameworks",
+      "nested-framework",
+    ]),
+    (error) => {
+      assert.equal(error.code, 1);
+      assert.match(error.stderr, /Unsupported application types: nested-api/u);
+      return true;
+    },
+  );
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [
+      cliEntry,
+      "init",
+      "--project-path",
+      fixture.projectPath,
+      "--kb-path",
+      fixture.knowledgeBasePath,
+      "--agent-path",
+      fixture.agentPath,
+      "--agent-persona",
+      "software-developer",
+      "--application-type",
+      "cli",
+      "--frameworks",
+      "nested-framework",
+    ]),
+    (error) => {
+      assert.equal(error.code, 1);
+      assert.match(error.stderr, /Unsupported frameworks: nested-framework/u);
+      return true;
+    },
+  );
+});

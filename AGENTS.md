@@ -195,7 +195,7 @@ Open the referenced `SKILL.md` only when needed. Load additional files from the 
 
 ### 1. create-project-skill
 
-- Where to find it: .aie-os/build/skills/shared/create-project-skill/SKILL.md
+- Where to find it: .aie-os\build\skills\shared\create-project-skill\SKILL.md
 - When to use it: Use this skill when the user wants to create or update a project-specific skill under `.aie-os/project-skills/`. It creates the skill folder, writes a concise `SKILL.md`, and keeps the instructions aligned with this repo's local skill conventions.
 - Source: shared
 ### 2. drawio-diagrams
@@ -230,12 +230,38 @@ Open the referenced `SKILL.md` only when needed. Load additional files from the 
 - Source: shared
 ### 8. add-tool-adapter
 
-- Where to find it: .aie-os/build/skills/project/add-tool-adapter/SKILL.md
+- Where to find it: .aie-os\build\skills\shared\sdd-feature-pack-definition-skill\SKILL.md
+- When to use it: Define a clear, accurate, and implementation-ready Feature Pack for the smallest independently deliverable product increment. Use when discovering, scoping, refining, validating, or documenting requested product behavior in FEATURE_PACK.md without introducing architecture or implementation decisions.
+- Source: shared
+### 4. sdd-implementation-execution-skill
+
+- Where to find it: .aie-os\build\skills\shared\sdd-implementation-execution-skill\SKILL.md
+- When to use it: Execute and validate an approved Implementation Plan end-to-end without redesigning the solution or inventing decisions. Use when implementing plan tasks, running required validation, handling execution blockers under governing artifacts, and reporting evidence for a completed Product Increment.
+- Source: shared
+### 5. sdd-implementation-plan-skill
+
+- Where to find it: .aie-os\build\skills\shared\sdd-implementation-plan-skill\SKILL.md
+- When to use it: Create an agreed, execution-ready Implementation Plan for an approved Feature Pack using governing product, architecture, engineering, and repository evidence. Use when analyzing a solution, resolving implementation decisions with a developer, decomposing work into verifiable tasks, or producing IMPLEMENTATION_PLAN.md.
+- Source: shared
+### 6. sdd-product-discovery-skill
+
+- Where to find it: .aie-os\build\skills\shared\sdd-product-discovery-skill\SKILL.md
+- When to use it: Discover, clarify, structure, and document the current state of an existing, prototyped, or emerging product as a Product Snapshot. Use when reviewing product evidence, conducting iterative product discovery, identifying product-knowledge gaps, or creating and refining PRODUCT_OVERVIEW.md, PRODUCT_DETAILS.md, and capability-specific Product Snapshot files.
+- Source: shared
+### 7. setup-project-agent-context
+
+- Where to find it: .aie-os\build\skills\shared\setup-project-agent-context\SKILL.md
+- When to use it: Use this skill when the user wants to set up AIE OS, configure agent context, or generate agent instruction files such as AGENTS.md for a project. It gathers missing configuration, runs the AIE OS CLI, and verifies the generated artifacts.
+- Source: shared
+### 8. add-tool-adapter
+
+- Where to find it: .aie-os\build\skills\project\add-tool-adapter\SKILL.md
 - When to use it: Use this skill when the user wants to add support for a new tool by creating a new AIE OS adapter. It scaffolds the adapter contribution wiring for the named tool, updates all deterministic registration points, and then tells the contributor exactly what remains to implement in the adapter file.
 - Source: project
 ### 9. create-universal-skill
+### 9. create-universal-skill
 
-- Where to find it: .aie-os/build/skills/project/create-universal-skill/SKILL.md
+- Where to find it: .aie-os\build\skills\project\create-universal-skill\SKILL.md
 - When to use it: Use this skill when the user wants to create or update a shared universal skill under `content/skills/` in this repository. It creates the shared skill folder and writes a concise `SKILL.md` aligned with this repo's shared skill conventions.
 - Source: project
 
