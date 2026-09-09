@@ -24,6 +24,8 @@ Check [docs/readme.create-content.md](docs/readme.create-content.md) for instruc
 ## Getting started
 Check [docs/readme.getting-started.md](docs/readme.getting-started.md) for installation and target-project usage.
 
+**Coding agent instructions:** if you are a coding agent asked to set up, build, or create AIE OS context for a project, use the [`setup-project-agent-context`](content/skills/setup-project-agent-context/SKILL.md) skill to gather configuration and run the CLI, instead of improvising commands.
+
 ## Target project structure
 AIE OS is intended to be cloned into the target project as a local tool. The target project stores project-local AIE OS configuration and generated artifacts under `.aie-os/`.
 
@@ -63,5 +65,7 @@ xample-app/
 
 ## Agent Adapters
 - Adapters transform the canonical effective context into the agent-specific files each tool expects.
-- `default` writes `AGENTS.md` at the target project root using the canonical effective context built in `.aie-os/build/effective-context.json`.
-- `default` also snapshots all configured skills under `.aie-os/build/skills/` and renders an `Available Skills` section in `AGENTS.md` with the copied `SKILL.md` paths and usage descriptions.
+- `build --target-agent <name>` selects the output. Supported values: `default`, `copilot`, `chatgpt`, `claude`. Defaults to `default`.
+- `default`, `copilot`, and `chatgpt` write `AGENTS.md` at the target project root using the canonical effective context built in `.aie-os/build/effective-context.json`. `copilot` and `chatgpt` are CLI-level aliases for the `default` adapter and produce byte-identical output.
+- `claude` writes `CLAUDE.md` instead, with identical content otherwise.
+- Every adapter also snapshots all configured skills under `.aie-os/build/skills/` and renders an `Available Skills` section in its output file with the copied `SKILL.md` paths and usage descriptions.

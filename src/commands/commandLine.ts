@@ -1,9 +1,14 @@
 import path from "node:path";
 import { commandName } from "./commandName";
-import type { ExecutionOptions, InitExecutionOptions, ParsedOptions, ToolName } from "./types";
+import type {
+  ExecutionOptions,
+  InitExecutionOptions,
+  ParsedOptions,
+  TargetAgentName,
+} from "./types";
 
-const DEFAULT_TOOL_NAME: ToolName = "default";
-const SUPPORTED_TOOLS: ToolName[] = [DEFAULT_TOOL_NAME];
+const DEFAULT_TARGET_AGENT: TargetAgentName = "default";
+const SUPPORTED_TARGET_AGENTS: TargetAgentName[] = ["default", "copilot", "chatgpt", "claude"];
 const INIT_DEFAULTS = {
   agentPath: "aie-os/content/agent",
   kbPath: "aie-os/content/knowledge-base",
@@ -40,7 +45,7 @@ Init options:
 
 Build options:
   --project-path                    Target repository. Defaults to the current directory.
-  --tool                            Delivery adapter target. Defaults to default.
+  --target-agent                    Delivery target agent. Defaults to default. Supported values: default, copilot, chatgpt, claude.
 
 Other options:
   -h, --help                        Show help.
@@ -51,7 +56,7 @@ Examples:
   ${commandName} init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer
   ${commandName} init --kb-path content/knowledge-base --agent-path content/agent --agent-persona software-developer --languages typescript --application-type cli
   ${commandName} build
-  ${commandName} build --tool default`;
+  ${commandName} build --target-agent claude`;
 
 export function parseCommandInput(argv: string[]): ParsedOptions {
   const [command, ...rest] = argv;
@@ -137,23 +142,23 @@ export function resolveExecutionOptions(
       : {
           command: "build",
           projectPath,
-          tool: DEFAULT_TOOL_NAME,
+          targetAgent: DEFAULT_TARGET_AGENT,
         };
   }
 
   if (parsed.command === "build") {
-    rejectUnsupportedOptions(parsed.options, ["--tool", "--project-path"]);
+    rejectUnsupportedOptions(parsed.options, ["--target-agent", "--project-path"]);
 
-    const tool = parsed.options["--tool"] ?? DEFAULT_TOOL_NAME;
+    const targetAgent = parsed.options["--target-agent"] ?? DEFAULT_TARGET_AGENT;
 
-    if (!SUPPORTED_TOOLS.includes(tool as ToolName)) {
-      throw new Error(`Unsupported tool: ${tool}`);
+    if (!SUPPORTED_TARGET_AGENTS.includes(targetAgent as TargetAgentName)) {
+      throw new Error(`Unsupported target agent: ${targetAgent}`);
     }
 
     return {
       command: "build",
       projectPath,
-      tool: tool as ToolName,
+      targetAgent: targetAgent as TargetAgentName,
     };
   }
 

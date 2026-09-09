@@ -57,9 +57,9 @@ docker compose -f aie-os/docker-compose.yaml run --rm aie-os init \
 - in explicit mode, omitted optional values become empty/unset and `init` does not prompt
 
 ### Build agent context.
-Build context and generate the adapter artifacts. `build` uses the `default` adapter when `--tool` is omitted.
+Build context and generate the adapter artifacts. `build` targets the `default` adapter when `--target-agent` is omitted.
 ```bash
-docker compose -f aie-os/docker-compose.yaml run --rm aie-os build [--project-path <value>] [--tool default]
+docker compose -f aie-os/docker-compose.yaml run --rm aie-os build [--project-path <value>] [--target-agent default]
 ```
-* `--tool`: optional. Defaults to `default`.
+* `--target-agent`: optional. Defaults to `default`. Supported values: `default`, `copilot`, `chatgpt` (write `AGENTS.md`), `claude` (writes `CLAUDE.md`).
 * `--project-path /path/to/project` optional, defaults to current directory.

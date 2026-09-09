@@ -34,12 +34,30 @@ test("Init defaults stay the same when --project-path is provided", () => {
   });
 });
 
-test("Build defaults to the default adapter when --tool is omitted", () => {
+test("Build defaults to the default target agent when --target-agent is omitted", () => {
   const executionOptions = resolveExecutionOptions(parseCommandInput(["build"]), "/tmp/example-project");
 
   assert.equal(executionOptions.command, "build");
   assert.equal(executionOptions.projectPath, "/tmp/example-project");
-  assert.equal(executionOptions.tool, "default");
+  assert.equal(executionOptions.targetAgent, "default");
+});
+
+test("Build accepts claude, copilot, and chatgpt as target agents", () => {
+  for (const targetAgent of ["claude", "copilot", "chatgpt"]) {
+    const executionOptions = resolveExecutionOptions(
+      parseCommandInput(["build", "--target-agent", targetAgent]),
+      "/tmp/example-project",
+    );
+
+    assert.equal(executionOptions.targetAgent, targetAgent);
+  }
+});
+
+test("Build rejects an unsupported target agent", () => {
+  assert.throws(
+    () => resolveExecutionOptions(parseCommandInput(["build", "--target-agent", "codex"]), "/tmp/example-project"),
+    /Unsupported target agent: codex/u,
+  );
 });
 
 test("Explicit init preserves an explicitly empty knowledge-base path in the execution model", () => {

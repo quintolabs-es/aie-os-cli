@@ -27,7 +27,14 @@ The extension model is:
 5. one supported tool type update in:
    - `src/agentAdapters/types.ts`
 6. CLI support in:
-   - `src/commands/commandLine.ts`
+   - `src/commands/commandLine.ts` (`--target-agent`)
+   - `src/commands/build.ts` (the target-agent-to-adapter-tool alias map)
+
+### Target agents vs. adapters
+
+`--target-agent` is a CLI-facing concept (`src/commands/types.ts`'s `TargetAgentName`) and can have more values than `AdapterTool`. Two target agents may need byte-identical output (for example `copilot` and `chatgpt` both render `AGENTS.md`) — in that case, do not scaffold a second adapter folder. Instead, add the new target-agent name to `SUPPORTED_TARGET_AGENTS` in `src/commands/commandLine.ts` and map it to the existing `AdapterTool` in the alias table in `src/commands/build.ts`. Only give a target agent its own adapter folder when its rendering actually differs.
+
+When two adapters render nearly the same content (for example `default` and `claude`, which differ only by output filename), factor the shared rendering logic into a small helper under `src/agentAdapters/shared/` parameterized by the differing inputs, and have both adapter files call it. This is a deliberate deviation from the fully self-contained example below, used only to avoid duplicating a renderer that must stay byte-for-byte in sync across adapters.
 
 ### Adapter input
 

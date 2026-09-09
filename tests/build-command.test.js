@@ -65,6 +65,78 @@ test("Build uses the default adapter and prints the bootstrap prompt after a suc
   await fs.access(path.join(fixture.projectPath, ".aie-os", "build", "effective-context.json"));
 });
 
+test("Build writes CLAUDE.md when --target-agent claude is passed", async () => {
+  const fixture = await createInitFixture();
+
+  await execFileAsync(process.execPath, [
+    cliEntry,
+    "init",
+    "--project-path",
+    fixture.projectPath,
+    "--kb-path",
+    fixture.knowledgeBasePath,
+    "--agent-path",
+    fixture.agentPath,
+    "--agent-persona",
+    "software-developer",
+  ]);
+
+  const { stdout } = await execFileAsync(process.execPath, [
+    cliEntry,
+    "build",
+    "--project-path",
+    fixture.projectPath,
+    "--target-agent",
+    "claude",
+  ]);
+  const normalizedStdout = stdout.replace(ansiPattern, "");
+
+  assert.match(normalizedStdout, /Generated canonical context file .* and CLAUDE\.md\./u);
+  assert.match(normalizedStdout, /Read `CLAUDE\.md` at the repo root/u);
+
+  await fs.access(path.join(fixture.projectPath, "CLAUDE.md"));
+  await assert.rejects(fs.access(path.join(fixture.projectPath, "AGENTS.md")));
+});
+
+test("Build writes byte-identical AGENTS.md for copilot and chatgpt target agents", async () => {
+  const fixture = await createInitFixture();
+
+  await execFileAsync(process.execPath, [
+    cliEntry,
+    "init",
+    "--project-path",
+    fixture.projectPath,
+    "--kb-path",
+    fixture.knowledgeBasePath,
+    "--agent-path",
+    fixture.agentPath,
+    "--agent-persona",
+    "software-developer",
+  ]);
+
+  await execFileAsync(process.execPath, [
+    cliEntry,
+    "build",
+    "--project-path",
+    fixture.projectPath,
+  ]);
+  const defaultContents = await fs.readFile(path.join(fixture.projectPath, "AGENTS.md"), "utf8");
+
+  for (const targetAgent of ["copilot", "chatgpt"]) {
+    await execFileAsync(process.execPath, [
+      cliEntry,
+      "build",
+      "--project-path",
+      fixture.projectPath,
+      "--target-agent",
+      targetAgent,
+    ]);
+    const targetAgentContents = await fs.readFile(path.join(fixture.projectPath, "AGENTS.md"), "utf8");
+
+    assert.equal(targetAgentContents, defaultContents);
+  }
+});
+
 test("Build keeps Conditional Rules in effective context but merges them into Coding Rules in AGENTS output", async () => {
   const fixture = await createInitFixture();
 

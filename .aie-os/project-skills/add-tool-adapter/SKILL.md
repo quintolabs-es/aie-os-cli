@@ -16,7 +16,7 @@ Use this skill when the user wants to add a new adapter for a new tool in this `
   - adapter file scaffold
   - static adapter registry entry
   - supported tool type update
-  - CLI tool selection wiring
+  - CLI target-agent selection wiring
   - CLI help text update
 - After scaffolding, tell the contributor exactly what remains to implement.
 
@@ -26,13 +26,17 @@ Do:
 - create the adapter file scaffold
 - update the static TypeScript adapter registry
 - update the supported adapter tool type
-- update CLI support so the new tool is selectable from `build --tool`
+- update CLI support so the new tool is selectable from `build --target-agent`
 - update CLI help text so the new tool appears in usage and option descriptions
 
 Do not:
 - invent tool-specific rendering rules without user input
 - leave deterministic wiring as a manual follow-up
 - change unrelated adapters
+
+## Target agent aliases
+
+`--target-agent` (CLI-facing, `TargetAgentName` in `src/commands/types.ts`) is a separate concept from `AdapterTool` (`src/agentAdapters/types.ts`) and can have more values. If the user wants a new target-agent name to produce output byte-identical to an existing adapter, do not scaffold a new adapter folder — instead add the name to `SUPPORTED_TARGET_AGENTS` in `src/commands/commandLine.ts` and map it to the existing `AdapterTool` in the alias table (`TARGET_AGENT_ADAPTER_TOOLS`) in `src/commands/build.ts`. Only run the full workflow below when the new tool needs its own `AdapterTool` and adapter file.
 
 ## Required Input
 
@@ -45,7 +49,7 @@ Given the user-provided tool name:
 
 - `toolKey`
   - lowercase kebab-case
-  - used for `--tool`
+  - used for `--target-agent`
   - examples:
     - `Claude Code` -> `claude-code`
     - `Cursor` -> `cursor`
@@ -70,7 +74,9 @@ Given the user-provided tool name:
 1. Stop if `toolKey` already exists in:
    - `src/agentAdapters/types.ts`
    - `src/agentAdapters/index.ts`
+   - `src/commands/types.ts`
    - `src/commands/commandLine.ts`
+   - `src/commands/build.ts`
 
 2. Create `adapterFile` with this exact scaffold, replacing the placeholders:
 
@@ -99,19 +105,11 @@ export const <adapterSymbol>: Adapter = {
 
 3. Update `src/agentAdapters/types.ts`.
 
-Change:
+Append `| "<toolKey>"` to the existing `AdapterTool` union without rewriting unrelated values, for example:
 
 ```ts
-export type AdapterTool = "default";
+export type AdapterTool = "default" | "claude" | "<toolKey>";
 ```
-
-To:
-
-```ts
-export type AdapterTool = "default" | "<toolKey>";
-```
-
-If more tools already exist, append `| "<toolKey>"` to the union instead of rewriting unrelated values.
 
 4. Update `src/agentAdapters/index.ts`.
 
@@ -131,76 +129,34 @@ Keep the existing static registry object. Do not replace it with dynamic loading
 
 5. Update `src/commands/commandLine.ts`.
 
-Make these deterministic changes:
-
-- keep the command-line tool type aligned with the adapter registry:
+Add `<toolKey>` to the supported target agents:
 
 ```ts
-import type { ToolName } from "./types";
+const SUPPORTED_TARGET_AGENTS: TargetAgentName[] = ["default", "copilot", "chatgpt", "claude", "<toolKey>"];
 ```
 
-- replace the single-tool constant:
+Update the `--target-agent` option description and usage examples in `usageText` if the list of supported values is shown there, so `<toolKey>` appears alongside the others.
+
+6. Update `src/commands/types.ts`.
+
+Add `<toolKey>` to the `TargetAgentName` union:
 
 ```ts
-const DEFAULT_TOOL_NAME = "default";
+export type TargetAgentName = "default" | "copilot" | "chatgpt" | "claude" | "<toolKey>";
 ```
 
-With:
+7. Update `src/commands/build.ts`.
+
+Add an identity entry to `TARGET_AGENT_ADAPTER_TOOLS` so the new target agent resolves to its own adapter (not an alias of an existing one):
 
 ```ts
-const DEFAULT_TOOL_NAME: ToolName = "default";
-const SUPPORTED_TOOLS: ToolName[] = ["default", "<toolKey>"];
-const SUPPORTED_TOOLS_CLI = SUPPORTED_TOOLS.join("|");
-const SUPPORTED_TOOLS_TEXT = SUPPORTED_TOOLS.join(", ");
+const TARGET_AGENT_ADAPTER_TOOLS: Record<TargetAgentName, AdapterTool> = {
+  // ...existing entries
+  <toolKey>: "<toolKey>",
+};
 ```
 
-- update `usageText` so the build usage line becomes:
-
-```ts
-  build [--project-path <path>] [--tool <${SUPPORTED_TOOLS_CLI}>]
-```
-
-- update the `--tool` option description to:
-
-```ts
-  --tool                            Delivery adapter target. Supported tools: ${SUPPORTED_TOOLS_TEXT}.
-```
-
-- update the help fallback build tool from:
-
-```ts
-tool: DEFAULT_TOOL_NAME,
-```
-
-To:
-
-```ts
-tool: DEFAULT_TOOL_NAME,
-```
-
-- update build validation from the single-tool check to:
-
-```ts
-if (!SUPPORTED_TOOLS.includes(tool as ToolName)) {
-  throw new Error(`Unsupported tool: ${tool}`);
-}
-```
-
-- default the tool when omitted:
-
-```ts
-const tool = parsed.options["--tool"] ?? DEFAULT_TOOL_NAME;
-```
-
-- update the final build execution options return to:
-
-```ts
-tool: tool as ToolName,
-```
-
-Do not leave any `Only codex is supported in v1.` wording in the file after the scaffold.
-
-6. Do not change any other files unless the user explicitly asks for more.
+8. Do not change any other files unless the user explicitly asks for more.
 
 ## Response After Scaffolding
 
@@ -212,5 +168,5 @@ After the scaffold is created, report:
   1. implement the tool-specific rendering logic in `src/agentAdapters/<toolKey>/<adapterBaseName>Adapter.ts`
   2. replace the placeholder output path, contents, and bootstrap prompt in that adapter file
   3. run `pnpm run build`
-  4. run `bash bin/cli build --project-path <path-to-test-project> --tool <toolKey>`
+  4. run `bash bin/cli build --project-path <path-to-test-project> --target-agent <toolKey>`
   5. inspect the generated artifact written by the new adapter

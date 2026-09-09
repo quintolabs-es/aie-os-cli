@@ -1,7 +1,5 @@
-import type { AdapterTool } from "../agentAdapters";
-
 export type CommandName = "init" | "build";
-export type ToolName = AdapterTool;
+export type TargetAgentName = "default" | "copilot" | "chatgpt" | "claude";
 
 export type ParsedOptions = {
   command: CommandName | null;
@@ -12,7 +10,7 @@ export type ParsedOptions = {
 export type BuildExecutionOptions = {
   command: "build";
   projectPath: string;
-  tool: ToolName;
+  targetAgent: TargetAgentName;
 };
 
 export type InitPromptDefaults = {

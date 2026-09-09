@@ -10,7 +10,7 @@ Use this skill when the user wants to configure or generate agent context for a 
 ## Outcome
 
 - Configure the target project with AIE OS when needed.
-- Generate `AGENTS.md` through the AIE OS CLI.
+- Generate the agent instructions file (`AGENTS.md`, or `CLAUDE.md` when the target agent is `claude`) through the AIE OS CLI.
 - Verify the configuration, canonical context, and agent instructions artifacts.
 
 ## Required Input
@@ -29,7 +29,7 @@ Use this skill when the user wants to configure or generate agent context for a 
    - ask which application types apply and require `none`, one valid application-type name, or multiple valid application-type names;
    - ask which frameworks apply and require `none`, one valid framework name, or multiple valid framework names;
    - ask whether to include the shared skills path and require one of the valid answers such as `yes` or `no`;
-   - ask which tool adapter to use and require exactly one valid tool name;
+   - ask which target agent to use and require exactly one of: `default`, `copilot`, `chatgpt`, `claude`;
    - ask for target project path, Compose file location, knowledge-base path, and agent path when they are not obvious, unusual, or when multiple candidates exist.
 4. Every question for a selectable value must list the exact valid response values in the question itself. Phrase it conversationally while keeping the answer space closed. Example: `Which languages will this project use? Answer with none, one, or more than one of: typescript, csharp.`
 5. For selectable values, show only valid alternatives discovered from the available AIE OS content. Add a concise recommendation when useful, but clearly label it as a recommendation and never treat it as selected.
@@ -39,8 +39,8 @@ Use this skill when the user wants to configure or generate agent context for a 
 9. Confirm the local AIE OS clone contains `docker-compose.yaml`.
 10. If `.aie-os/aie-os.json` does not exist, run `docker compose -f aie-os/docker-compose.yaml run --rm aie-os init`. Append the approved `--kb-path`, `--agent-path`, `--agent-persona`, and any approved `--skills-path`, `--languages`, `--application-type`, or `--frameworks` options.
 11. If `.aie-os/aie-os.json` exists, preserve it and skip initialization unless the user explicitly requests reconfiguration.
-12. Run `docker compose -f aie-os/docker-compose.yaml run --rm aie-os build --tool <approved-tool>`.
-13. Verify `.aie-os/aie-os.json`, `.aie-os/build/effective-context.json`, and a non-empty `AGENTS.md`.
+12. Run `docker compose -f aie-os/docker-compose.yaml run --rm aie-os build --target-agent <approved-target-agent>`.
+13. Verify `.aie-os/aie-os.json`, `.aie-os/build/effective-context.json`, and a non-empty agent instructions file (`AGENTS.md`, or `CLAUDE.md` when the approved target agent is `claude`).
 14. Report the generated artifact paths or the CLI error that prevented completion.
 
 ## Rules

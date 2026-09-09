@@ -1,11 +1,11 @@
 import { buildMarkdownAdapterOutput } from "../shared/markdownAdapterRenderer";
 import type { Adapter, AdapterOutput } from "../types";
 
-const instructionsFileName = "AGENTS.md";
+const instructionsFileName = "CLAUDE.md";
 
-export const defaultAdapter: Adapter = {
+export const claudeAdapter: Adapter = {
   async build(input): Promise<AdapterOutput> {
     return buildMarkdownAdapterOutput(input, instructionsFileName);
   },
-  tool: "default",
+  tool: "claude",
 };
